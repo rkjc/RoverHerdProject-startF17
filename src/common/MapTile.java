@@ -72,10 +72,14 @@ public class MapTile {
 		return this.hasRover;
 	}
 	
-	// well, broke the thread safe rule
+	// well, this probably broke the thread safe rule
 	
 	public void setHasRoverTrue(){
 		this.hasRover = true;
+	}
+	
+	public void setHasRoverFalse(){
+		this.hasRover = false;
 	}
 	
 	public void setSciecne(Science sci){
