@@ -137,6 +137,7 @@ public class ROVER_00 {
 			String currentDir = cardinals[0];
 			Coord currentLoc = null;
 			Coord previousLoc = null;
+			int stepCount = 0;
 	
 
 			/**
@@ -195,14 +196,25 @@ public class ROVER_00 {
 				// ***** MOVING *****
 				// try moving east 5 block if blocked
 				if (blocked) {
-					for (int i = 0; i < 5; i++) {
+					if(stepCount > 0){
 						out.println("MOVE E");
 						//System.out.println("ROVER_00 request move E");
-						Thread.sleep(300);
+						stepCount -= 1;
 					}
-					blocked = false;
-					//reverses direction after being blocked
-					goingSouth = !goingSouth;
+					else {
+						blocked = false;
+						//reverses direction after being blocked and side stepping
+						goingSouth = !goingSouth;
+					}
+					
+//					for (int i = 0; i < 5; i++) {
+//						out.println("MOVE E");
+//						//System.out.println("ROVER_00 request move E");
+//						Thread.sleep(300);
+//					}
+//					blocked = false;
+//					//reverses direction after being blocked
+//					goingSouth = !goingSouth;
 				} else {
 	
 					// pull the MapTile array out of the ScanMap object
@@ -215,8 +227,10 @@ public class ROVER_00 {
 						// (scanMap may be old data by now)
 						if (scanMapTiles[centerIndex][centerIndex +1].getHasRover() 
 								|| scanMapTiles[centerIndex][centerIndex +1].getTerrain() == Terrain.ROCK
+								|| scanMapTiles[centerIndex][centerIndex +1].getTerrain() == Terrain.SAND
 								|| scanMapTiles[centerIndex][centerIndex +1].getTerrain() == Terrain.NONE) {
 							blocked = true;
+							stepCount = 5;  //side stepping
 						} else {
 							// request to server to move
 							out.println("MOVE S");
@@ -231,8 +245,10 @@ public class ROVER_00 {
 						
 						if (scanMapTiles[centerIndex][centerIndex -1].getHasRover() 
 								|| scanMapTiles[centerIndex][centerIndex -1].getTerrain() == Terrain.ROCK
+								|| scanMapTiles[centerIndex][centerIndex -1].getTerrain() == Terrain.SAND
 								|| scanMapTiles[centerIndex][centerIndex -1].getTerrain() == Terrain.NONE) {
 							blocked = true;
+							stepCount = 5;  //side stepping
 						} else {
 							// request to server to move
 							out.println("MOVE N");
