@@ -27,7 +27,7 @@ public class MapTile {
 	}
 	
 	public MapTile(String terrainLetter){
-		// use any String as an argument to create MapTile with no terrain
+		// use appropriate string to create MapTile with matching terrain
 		this.terrain = Terrain.getEnum(terrainLetter);
 		
 		this.science = Science.NONE;

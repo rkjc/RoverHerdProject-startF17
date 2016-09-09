@@ -142,6 +142,7 @@ public class ROVER_98 {
 
 			/**
 			 *  ####  Rover controller process loop  ####
+			 *  this rover is dedicated to reciving the map from rover 11 and displaying it on the command line.
 			 */
 			while (true) {
 	
@@ -185,50 +186,50 @@ public class ROVER_98 {
 				// ***** MOVING *****
 				// try moving east 5 block if blocked
 				
-	
-					// pull the MapTile array out of the ScanMap object
-					MapTile[][] scanMapTiles = scanMap.getScanMap();
-					int centerIndex = (scanMap.getEdgeSize() - 1)/2;
-					// tile S = y + 1; N = y - 1; E = x + 1; W = x - 1
-					
-	
-					if (goingEast) {
-						// Checks to see if there is science on current tile, if not it moves East
-						System.out.println("ROVER_98: scanMapTiles[centerIndex][centerIndex].getScience().getSciString() " + scanMapTiles[centerIndex][centerIndex].getScience().getSciString());
-						if (!scanMapTiles[centerIndex][centerIndex].getScience().getSciString().equals("N")) {
-							System.out.println("ROVER_98 request GATHER");
-							out.println("GATHER");
-							
-						} else {
-							// request to server to move
-							out.println("MOVE E");
-							System.out.println("ROVER_98 request move E");
-						}
-						
-					} 			
+//	
+//					// pull the MapTile array out of the ScanMap object
+//					MapTile[][] scanMapTiles = scanMap.getScanMap();
+//					int centerIndex = (scanMap.getEdgeSize() - 1)/2;
+//					// tile S = y + 1; N = y - 1; E = x + 1; W = x - 1
+//					
+//	
+//					if (goingEast) {
+//						// Checks to see if there is science on current tile, if not it moves East
+//						System.out.println("ROVER_98: scanMapTiles[centerIndex][centerIndex].getScience().getSciString() " + scanMapTiles[centerIndex][centerIndex].getScience().getSciString());
+//						if (!scanMapTiles[centerIndex][centerIndex].getScience().getSciString().equals("N")) {
+//							System.out.println("ROVER_98 request GATHER");
+//							out.println("GATHER");
+//							
+//						} else {
+//							// request to server to move
+//							out.println("MOVE E");
+//							System.out.println("ROVER_98 request move E");
+//						}
+//						
+//					} 			
 
 				
 	
-				// another call for current location
-				out.println("LOC");
-				line = in.readLine();
-				if(line == null){
-					System.out.println("ROVER_98 check connection to server");
-					line = "";
-				}
-				if (line.startsWith("LOC")) {
-					currentLoc = extractLocationFromString(line);
-					
-				}
+//				// another call for current location
+//				out.println("LOC");
+//				line = in.readLine();
+//				if(line == null){
+//					System.out.println("ROVER_98 check connection to server");
+//					line = "";
+//				}
+//				if (line.startsWith("LOC")) {
+//					currentLoc = extractLocationFromString(line);
+//					
+//				}
 	
 	
-				// test for stuckness
-				stuck = currentLoc.equals(previousLoc);
-	
-				//System.out.println("ROVER_98 stuck test " + stuck);
-				System.out.println("ROVER_98 blocked test " + blocked);
-	
-				// TODO - logic to calculate where to move next
+//				// test for stuckness
+//				stuck = currentLoc.equals(previousLoc);
+//	
+//				//System.out.println("ROVER_98 stuck test " + stuck);
+//				System.out.println("ROVER_98 blocked test " + blocked);
+//	
+//				// TODO - logic to calculate where to move next
 	
 				
 				// this is the Rovers HeartBeat, it regulates how fast the Rover cycles through the control loop
