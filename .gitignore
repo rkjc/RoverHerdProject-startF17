@@ -1,0 +1,24 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+
+!src
+!src/
+!src/*
+!src/**
+
+!libs
+!libs/
+!libs/*
+!libs/**
+
+!Maps
+!Maps/
+!Maps/*
+!Maps/**
+
+!*.txt
+
+#but do ignore this file
