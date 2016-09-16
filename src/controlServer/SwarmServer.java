@@ -65,18 +65,12 @@ public class SwarmServer {
     
     private static long countdownTimer;
     private static boolean roversAreGO;
-    
-	static GUIdisplay mainPanel;
-	static MyGUIWorker myWorker;
-	
-    static GUIdisplay2 mainPanel2;
-	static MyGUIWorker2 myWorker2;
 	
 	static GUIdisplay3 mainPanel3;
 	static MyGUIWorker3 myWorker3;
     
 	// Length of time allowed for the rovers to get back to the retrieval zone
-	static final int MAXIMUM_ACTIVITY_TIME_LIMIT = 600000; // 10 Minutes = 600,000
+	static final int MAXIMUM_ACTIVITY_TIME_LIMIT = 300000; // 10 Minutes = 600,000, 5 Minutes = 300,000
 	static Timer countDownTimer;
 	static long startTime;
 	
@@ -128,13 +122,6 @@ public class SwarmServer {
         scienceLocations = mapInit.getScienceLocations();
         
         countdownTimer = System.currentTimeMillis();
-        
-		mainPanel = new GUIdisplay(mapWidth, mapHeight);
-		myWorker = new MyGUIWorker(mainPanel);
-        
-       
-		mainPanel2 = new GUIdisplay2(mapWidth, mapHeight);
-		myWorker2 = new MyGUIWorker2(mainPanel2);
 		
 		mainPanel3 = new GUIdisplay3(mapWidth, mapHeight, MAXIMUM_ACTIVITY_TIME_LIMIT);
 		myWorker3 = new MyGUIWorker3(mainPanel3);
