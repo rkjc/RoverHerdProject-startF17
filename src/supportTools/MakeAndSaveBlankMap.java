@@ -18,8 +18,8 @@ import json.MyWriter;
 public class MakeAndSaveBlankMap {
 
 	public static void main(String[] args) throws IOException {
-		int mapWidth = 100;
-		int mapHeight = 60;
+		int mapWidth = 50;
+		int mapHeight = 30;
 		
 		String fileName = "Map" + mapWidth + "x" + mapHeight + "blank.txt";
 			
