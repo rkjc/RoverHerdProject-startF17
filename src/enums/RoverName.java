@@ -9,15 +9,19 @@ import java.util.List;
 // Sensors: RADIATION_SENSOR->Radioactivescience; CHEMICAL_SENSOR->Organic Science;
 //	SPECTRAL_SENSOR->Crystal Science; RADAR_SENSOR  ->mineral Science
 
+// Harvesting tools: EXCAVATOR->Soil and Sand;  DRILL->Rocks and Gravel
+
 public enum RoverName {
 	// (Drive type, accessory slot 1, accessory slot 2)
 	NONE,
 	
-	ROVER_01 ("WALKER", "DRILL", "SPECTRAL_SENSOR"),
-	ROVER_02 ("WALKER", "CHEMICAL_SENSOR", "RADIATION_SENSOR"),
-	ROVER_03 ("TREADS", "DRILL", "EXCAVATOR"),
-	ROVER_04 ("WALKER", "DRILL", "RADAR_SENSOR"),
-	ROVER_05 ("WHEELS", "RANGE_BOOTER", "SPECTRAL_SENSOR"),
+	ROVER_01 ("TREADS", "EXCAVATOR", "SPECTRAL_SENSOR"),
+	ROVER_02 ("WALKER", "EXCAVATOR", "DRILL"),
+	ROVER_03 ("WHEELS", "EXCAVATOR", "CHEMICAL_SENSOR"),
+	ROVER_04 ("WALKER", "DRILL", "RADIATION_SENSOR"),
+	ROVER_05 ("TREADS", "EXCAVATOR", "RADAR_SENSOR"),
+
+    //not currently being used
 	ROVER_06 ("WHEELS", "RANGE_BOOTER", "RADIATION_SENSOR"),
 	ROVER_07 ("TREADS", "EXCAVATOR", "RADAR_SENSOR"),
 	ROVER_08 ("TREADS", "EXCAVATOR", "SPECTRAL_SENSOR"),
@@ -31,8 +35,6 @@ public enum RoverName {
 	ROVER_16 ("WALKER", "DRILL", "RADIATION_SENSOR"),
 	ROVER_17 ("WHEELS", "RANGE_BOOTER", "RADAR_SENSOR"),
 	ROVER_18 ("WHEELS", "EXCAVATOR", "RADAR_SENSOR"),
-	
-	//not currently being used
 	ROVER_19 ("NONE", "NONE", "NONE"),
 	ROVER_20 ("NONE", "NONE", "NONE"),
 	
