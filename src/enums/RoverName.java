@@ -40,6 +40,14 @@ public enum RoverName {
 	
 	// sample test rovers
 	ROVER_00 ("WHEELS", "RADIATION_SENSOR", "RADAR_SENSOR"),
+	ROVER_90 ("WHEELS", "RANGE_BOOTER", "RADIATION_SENSOR"),
+	ROVER_91 ("WALKER", "DRILL", "EXCAVATOR"),
+	ROVER_92 ("WHEELS", "RANGE_BOOTER", "SPECTRAL_SENSOR"),
+	ROVER_93 ("TREADS", "EXCAVATOR", "CHEMICAL_SENSOR"),
+	ROVER_94 ("WHEELS", "RANGE_BOOTER", "CHEMICAL_SENSOR"),
+	ROVER_95 ("TREADS", "DRILL", "EXCAVATOR"),
+	ROVER_96 ("WALKER", "DRILL", "RADIATION_SENSOR"),
+	ROVER_97 ("WHEELS", "RANGE_BOOTER", "RADAR_SENSOR"),
 	ROVER_98 ("WALKER", "DRILL", "SPECTRAL_SENSOR"),
 	ROVER_99 ("TREADS", "SPECTRAL_SENSOR", "CHEMICAL_SENSOR");
 	
@@ -120,6 +128,31 @@ public enum RoverName {
     		output = RoverName.ROVER_20;
     		break;
     	
+    	// Sample Rover Set
+    	case "ROVER_90":
+    		output = RoverName.ROVER_90;
+    		break;
+    	case "ROVER_91":
+    		output = RoverName.ROVER_91;
+    		break;
+    	case "ROVER_92":
+    		output = RoverName.ROVER_92;
+    		break;    		
+    	case "ROVER_93":
+    		output = RoverName.ROVER_93;
+    		break;
+    	case "ROVER_94":
+    		output = RoverName.ROVER_94;
+    		break;
+    	case "ROVER_95":
+    		output = RoverName.ROVER_95;
+    		break;
+    	case "ROVER_96":
+    		output = RoverName.ROVER_96;
+    		break;
+    	case "ROVER_97":
+    		output = RoverName.ROVER_97;
+    		break;
     	case "ROVER_98":
     		output = RoverName.ROVER_98;
     		break;

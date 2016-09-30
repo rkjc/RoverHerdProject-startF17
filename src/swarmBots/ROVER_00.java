@@ -416,8 +416,8 @@ public class ROVER_00 {
 	 */
 	public static void main(String[] args) throws Exception {
 		ROVER_00 client;
-    	// if a command line argument is included it is used as the map filename
-		// if present uses an IP address instead of localhost 
+    	// if a command line argument is present it is used
+		// as the IP address for connection to SwarmServer instead of localhost 
 		
 		if(!(args.length == 0)){
 			client = new ROVER_00(args[0]);

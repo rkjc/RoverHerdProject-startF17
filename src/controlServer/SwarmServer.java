@@ -76,15 +76,15 @@ public class SwarmServer {
 	
 	// These are the velocity or speed values for the different drive systems
 	// Changes these as necessary for good simulation balance
-    static final int WHEELS_TIME_PER_SQUARE = 500;
-    static final int TREADS_TIME_PER_SQUARE = 1000;
+    static final int WHEELS_TIME_PER_SQUARE = 400;
+    static final int TREADS_TIME_PER_SQUARE = 900;
     static final int WALKER_TIME_PER_SQUARE = 1200;
     
     // limit of how many Calls can be made to the swarm server during a 1 second span
     static final int CALLS_PER_SECOND_LIMIT = 500;
     
     // minimum time in milliseconds that has to pass before another Gather can be done
-    static final long GATHER_TIME_PER_TILE = 2500;
+    static final long GATHER_TIME_PER_TILE = 3400;
     
  // length of a side of the scan map array !!! must be odd number !!!
     static final int STANDARD_SCANMAP_RANGE = 7;
@@ -160,8 +160,8 @@ public class SwarmServer {
     	// this should be replaced with a Rover Object
         private String roverNameString;
         private Socket socket;
-        private BufferedReader in;
-        private PrintWriter out;
+        private BufferedReader inFromRover;
+        private PrintWriter outToRover;
         
         // keeps track of Rover's current location
         private int xpos = 0;
@@ -183,15 +183,15 @@ public class SwarmServer {
         public void run() {
             try {
                 // Create character streams for the socket.
-                in = new BufferedReader(new InputStreamReader(
+                inFromRover = new BufferedReader(new InputStreamReader(
                     socket.getInputStream()));
-                out = new PrintWriter(socket.getOutputStream(), true);
+                outToRover = new PrintWriter(socket.getOutputStream(), true);
          
 
                 // Request a name from this client.  Keep requesting until returned.             
                 while (true) {
-                    out.println("SUBMITNAME");
-                    roverNameString = in.readLine();
+                    outToRover.println("SUBMITNAME");
+                    roverNameString = inFromRover.readLine();
                     System.out.println(roverNameString + " has connected to server");
                     if (roverNameString == null) {
                         return;
@@ -214,7 +214,7 @@ public class SwarmServer {
                 // ##### Run the Rover server process #####
                 while (roversAreGO) {	
                 	//read command input from the Rover
-                    String input = in.readLine();
+                    String input = inFromRover.readLine();
 
                     //condition the input to empty string if null
                     if (input == null) {
@@ -227,7 +227,7 @@ public class SwarmServer {
                    	
                     if(roverServerRequestsPerSecond > CALLS_PER_SECOND_LIMIT){
                     	System.out.println("SWARM_"+roverNameString+ "_thread: too many requests per second - dropping connection");
-                    	in.close();
+                    	inFromRover.close();
                     	socket.close();
                     }
                     
@@ -263,7 +263,7 @@ public class SwarmServer {
             	    	Coord roverPos = roverLocations.getLocation(rover.getRoverName());
             	    	xpos = roverPos.xpos;
             	    	ypos = roverPos.ypos;
-                    	out.println("LOC " + xpos + " " + ypos);
+                    	outToRover.println("LOC " + xpos + " " + ypos);
                     	
                     
                     	
@@ -275,11 +275,10 @@ public class SwarmServer {
                     	//System.out.println("SWARM: ------ START_LOC ------"); //debug test input parsing
                     	// does not need to synchronize-lock scienceLocations because not changing any values
                     	Coord startPos = planetMap.getStartPosition();
-                    	out.println("START_LOC " + startPos.xpos + " " + startPos.ypos);
+                    	outToRover.println("START_LOC " + startPos.xpos + " " + startPos.ypos);
                         	
                         	
-                        
-                    	
+                                          	
                 	/**
                 	 * **************** TARGET_LOC ********************
                 	 */
@@ -288,11 +287,10 @@ public class SwarmServer {
                     	//System.out.println("SWARM: ------ TARGET_LOC ------"); //debug test input parsing
                     	// does not need to synchronize-lock scienceLocations because not changing any values
                     	Coord targetPos = planetMap.getTargetPosition();
-                    	out.println("TARGET_LOC " + targetPos.xpos + " " + targetPos.ypos);
+                    	outToRover.println("TARGET_LOC " + targetPos.xpos + " " + targetPos.ypos);
                             	
                             	
-                    	
-                	
+                    	                	
                 	/**
                 	 * ******************** SCAN **********************
                 	 */
@@ -302,13 +300,13 @@ public class SwarmServer {
                     	
                     	String jsonScanMap = retriveScanMap(rover);
                     	
-            			out.println("SCAN"); //returns command header as check
+            			outToRover.println("SCAN"); //returns command header as check
             			
             			//return json string to Rover
-            			out.println(jsonScanMap.toString());
+            			outToRover.println(jsonScanMap.toString());
 
             			//to mark the end of the json string
-            			out.println("SCAN_END");
+            			outToRover.println("SCAN_END");
                     	
                     	
             			
@@ -319,7 +317,7 @@ public class SwarmServer {
                     } else if (input.startsWith("TIMER")){  
                     	int timeRemaining = 0;
                     	timeRemaining = (MAXIMUM_ACTIVITY_TIME_LIMIT - (int)(System.currentTimeMillis() - startTime)) / 1000;
-                    	out.println("TIMER " + timeRemaining);
+                    	outToRover.println("TIMER " + timeRemaining);
             			
                     	
             			
@@ -339,21 +337,26 @@ public class SwarmServer {
 	                    	if(scienceLocations.checkLocation(roverPos)
 	                    			&& (rover.getRoverLastGatherTime() + GATHER_TIME_PER_TILE < (System.currentTimeMillis()))){ 
 	                    		
-	                    		if((rover.getTool_1() == RoverToolType.DRILL || (rover.getTool_2() == RoverToolType.DRILL) 
+	                    		if(((rover.getTool_1() == RoverToolType.DRILL || (rover.getTool_2() == RoverToolType.DRILL)) 
 	                    				 && (planetMap.getTile(roverPos).getTerrain() == Terrain.ROCK || planetMap.getTile(roverPos).getTerrain() == Terrain.GRAVEL))){
+	                    			System.out.println("SWARM_"+roverNameString+ "_thread: GATHER- rover tool= "+rover.getTool_1()+" and "+rover.getTool_2());
+	                    			System.out.println("SWARM_"+roverNameString+ "_thread: GATHER- terrain= "+planetMap.getTile(roverPos).getTerrain());
+	                    			System.out.println("SWARM_"+roverNameString+ "_thread: GATHER- terrain test= "+(planetMap.getTile(roverPos).getTerrain() == Terrain.ROCK || planetMap.getTile(roverPos).getTerrain() == Terrain.GRAVEL));
 	                    			// remove the science from scienceLocations and store in rover scienceCargo	
 	                    			Science foundScience = scienceLocations.takeScience(roverPos);
 	                    			rover.scienceCargo.add(foundScience);
 	                    			corpCollectedScience.get(getCorpNumber(rover)).add(foundScience);
+	                    			rover.updateGatherTime();
 	                    			System.out.println("SwarmServer: corp " + getCorpNumber(rover) + " total science = " + corpCollectedScience.get(getCorpNumber(rover)).size());
 	                    		}
 	                    		
-	                    		if((rover.getTool_1() == RoverToolType.EXCAVATOR || (rover.getTool_2() == RoverToolType.EXCAVATOR) 
+	                    		if(((rover.getTool_1() == RoverToolType.EXCAVATOR || (rover.getTool_2() == RoverToolType.EXCAVATOR)) 
 	                    				 && (planetMap.getTile(roverPos).getTerrain() == Terrain.SOIL || planetMap.getTile(roverPos).getTerrain() == Terrain.SAND))){
 	                    			// remove the science from scienceLocations and store in rover scienceCargo	
 	                    			Science foundScience = scienceLocations.takeScience(roverPos);
 	                    			rover.scienceCargo.add(foundScience);
 	                    			corpCollectedScience.get(getCorpNumber(rover)).add(foundScience);
+	                    			rover.updateGatherTime();
 	                    			System.out.println("SwarmServer: corp " + getCorpNumber(rover) + " total science = " + corpCollectedScience.get(getCorpNumber(rover)).size());
 	                    		}
 	                    	}
@@ -361,8 +364,7 @@ public class SwarmServer {
                     	} //END synchronized lock
                  	
                     	
-                    	
-                    	
+                    	                	
 	            	/**
 	            	 * ******************* CARGO ***********************
 	            	 */	 	                
@@ -375,16 +377,15 @@ public class SwarmServer {
                     	// return contents of scienceCargo
                     	String jsonCargoList = gson.toJson(rover.scienceCargo);
                     	
-                    	out.println("CARGO"); //returns command header as check
+                    	outToRover.println("CARGO"); //returns command header as check
                     	
                     	// return an ArrayList of rover equipment - json string?
-                    	out.println(jsonCargoList.toString());
+                    	outToRover.println(jsonCargoList.toString());
                     	
-                    	out.println("CARGO_END");
-                    	
-                    	
+                    	outToRover.println("CARGO_END");
                     	
                     	
+                    	                  	
                 	/**
 	            	 * ******************* EQUIPMENT ***********************
 	            	 */	
@@ -402,22 +403,21 @@ public class SwarmServer {
                     	String jsonEqList = gson.toJson(eqList);
                     	
                     	//System.out.println("SWARM_"+roverNameString+ "_thread: returning work EQUIPMENT");
-                    	out.println("EQUIPMENT"); //returns command header as check
+                    	outToRover.println("EQUIPMENT"); //returns command header as check
                     	
                     	// return an ArrayList of rover equipment - json string?
-                    	out.println(jsonEqList.toString());
+                    	outToRover.println(jsonEqList.toString());
                     	
-                    	out.println("EQUIPMENT_END");
+                    	outToRover.println("EQUIPMENT_END");
                     	
                     
-                    	
-                    	
+                    	                   	
                 	/**
 	            	 * *********** DEFAULT - no recognizable command received ****************
 	            	 */		       	
                     } else {
                     	//default response
-                    	out.println("");
+                    	outToRover.println("");
                     }
                     
                              
@@ -788,10 +788,6 @@ public class SwarmServer {
 	}
     
 	static void updateGUIDisplay() throws Exception{
-		//myWorker.displayRovers(roverLocations);
-		//myWorker.displayActivity(roverLocations, scienceLocations);
-		//myWorker.displayFullMap(roverLocations, scienceLocations, planetMap);
-		//myWorker2.displayFullMap(roverLocations.clone(), scienceLocations, planetMap);
 		myWorker3.displayFullMap(roverLocations.clone(), scienceLocations, planetMap);
 	}
 	
