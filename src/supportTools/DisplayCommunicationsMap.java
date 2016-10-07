@@ -1,4 +1,4 @@
-package testUtillities;
+package supportTools;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +14,6 @@ import common.MapTile;
 import common.ScanMap;
 import enums.Science;
 import enums.Terrain;
-import supportTools.CommunicationHelper;
 
 public class DisplayCommunicationsMap {
 
@@ -81,34 +80,31 @@ public class DisplayCommunicationsMap {
 	        		tempTile = globalMap.get(new Coord(i, j));
 	        		
 	        		if(tempTile == null){
-	        			System.out.print("  ");
-	        		} else {
+	        			System.out.print("~ ");
+	        		 
 	        			//check and print edge of map has first priority
-	    				if(tempTile.getTerrain().toString().equals("NONE")){
+	        		} else if(tempTile.getTerrain().toString().equals("NONE")){
 	    					System.out.print("XX");
 	    					
-	    				// next most important - print terrain and/or science locations
-	    					//terrain and science
-	    				} else if(!(tempTile.getTerrain().toString().equals("SOIL"))
-	    						&& !(tempTile.getScience().toString().equals("NONE"))){
-	    					// both terrain and science
-	    					
-	    					System.out.print(tempTile.getTerrain().toString().substring(0,1) + tempTile.getScience().getSciString());
-	    					//just terrain
-	    				} else if(!(tempTile.getTerrain().toString().equals("SOIL"))){
-	    					System.out.print(tempTile.getTerrain().toString().substring(0,1) + " ");
-	    					//just science
-	    				} else if(!(tempTile.getScience().toString().equals("NONE"))){
-	    					System.out.print(" " + tempTile.getScience().getSciString());
-	    					
-	    				// if still empty check for rovers and print them
-	    				} else if(tempTile.getHasRover()){
-	    					System.out.print("[]");
-	    					
-	    				// nothing here so print nothing
-	    				} else {
-	    					
-	    				}
+    				// next most important - print terrain and/or science locations
+    					//terrain and science
+    				} else if(!(tempTile.getTerrain().toString().equals("SOIL"))
+    						&& !(tempTile.getScience().toString().equals("NONE"))){
+    					// has both terrain and science
+    					
+    					System.out.print(tempTile.getTerrain().toString().substring(0,1) + tempTile.getScience().getSciString());
+    					//just terrain
+    				} else if(!(tempTile.getTerrain().toString().equals("SOIL"))){
+    					System.out.print(tempTile.getTerrain().toString().substring(0,1) + " ");
+    					//just science
+    				} else if(!(tempTile.getScience().toString().equals("NONE"))){
+    					System.out.print(" " + tempTile.getScience().getSciString());
+    					
+    				// if still empty check for rovers and print them
+    				} else if(tempTile.getHasRover()){
+    					System.out.print("[]");
+    				} else {
+    					System.out.print("  ");	
 	        		}
         		}
         	}
