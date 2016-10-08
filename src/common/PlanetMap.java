@@ -95,7 +95,7 @@ public class PlanetMap {
 				
 				// check and add Science if on map
 				if(sciloc.checkLocation(tempCoord)){
-					aTile.setSciecne(sciloc.scanLocation(tempCoord));
+					aTile.setScience(sciloc.scanLocation(tempCoord));
 				}
 				tMap[i][j] = aTile;
 			}	
