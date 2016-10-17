@@ -85,20 +85,24 @@ public class PaintMapUtility {
 		
 		randomRover = new ArrayList<String>();
 		
-		for(int i = 1; i < 10; i++){
+		// use when there are up to nine groups
+		int numGroups = 5;
+		for(int i = 1; i <= numGroups; i++){
 			String roverNumber = "0" + Integer.toString(i);
 			randomRover.add(roverNumber);
-			randomRover.add(Integer.toString(i + 9));
 		}
+		
+		// use when there are two teams(corps) of up to nine groups
+//		for(int i = 1; i < 10; i++){
+//			String roverNumber = "0" + Integer.toString(i);
+//			randomRover.add(roverNumber);
+//			randomRover.add(Integer.toString(i + 9));
+//		}
 		
 		Random randomNum = new Random();
 		
 		FileReader inputPaintMapInfo = new FileReader(fileName);
 		BufferedReader bufRead_mapInfo = new BufferedReader(inputPaintMapInfo);
-		
-
-		
-		
 		
 		String myLine = null;
 
@@ -152,12 +156,9 @@ public class PaintMapUtility {
 			int sciNextSpaceIndex = sciInput.indexOf(" ", sciSpaceIndex +1);
 			
 			for (int i = 0; i < mapWidth; i++) {
-				
-				
 				String tempStr;
 				System.out.println("location " + i + " " + yPos + "  \n" );
-				
-				
+						
 				tempStr = inputLine.substring(spaceIndex, nextSpaceIndex);				
 				int R = Integer.parseInt(tempStr);
 				System.out.print("_R_" + tempStr);
@@ -475,17 +476,67 @@ public class PaintMapUtility {
 		}
 	}
 	
-	public void saveAsPaintMapFiles(){
+	public void saveToDisplayTextFile() throws IOException {		
+		String printMapString = makeMapString();
 		
+		try {
+			File file = new File(mapName);
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write(printMapString);
+	
+			fileWriter.flush();
+			fileWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String makeCommJSONmapString(){
+		StringBuilder commJSONmap = new StringBuilder();
 		
+		commJSONmap.append("[");
+		for (int j = 0; j < mapHeight; j++) {
+			for (int i = 0; i < mapWidth; i++) {
+				Coord tcor = new Coord(i, j);
+				commJSONmap.append("{");
+				commJSONmap.append("\"x\":" + i +",");
+				commJSONmap.append("\"y\":" + j +",");
+				commJSONmap.append("\"terrain\":\"" + planetMap.getTile(tcor).getTerrain() +"\",");
+				commJSONmap.append("\"science\":\"" + scienceLocations.scanLocation(tcor) +"\",");
+				commJSONmap.append("\"f\":00}");
+				if(i+1 < mapWidth)
+					commJSONmap.append(",");
+			}
+			if(j+1 < mapHeight)
+				commJSONmap.append(",\n");
+		}
+		commJSONmap.append("]");
+
+		String commMapString = commJSONmap.toString();
+		return commMapString;
+	}
+	
+	public void saveAsCommunicationServerJSONformat(){
+		String printMapString = makeCommJSONmapString();
+		
+		try {
+			File file = new File("commMapJSON_" + mapName);
+			FileWriter fileWriter = new FileWriter(file);
+			fileWriter.write(printMapString);
+	
+			fileWriter.flush();
+			fileWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 	}
 	
 	public static void main(String[] args) throws IOException {
 		PaintMapUtility cptm = new PaintMapUtility();
 		cptm.parseInputFromMaintMapFiles("PaintMap.txt");
 		
-		cptm.saveToDisplayTextFile("convertedPaintMapToTextMap.txt");		
-		
+		cptm.saveToDisplayTextFile();	
+		cptm.saveAsCommunicationServerJSONformat();	
 	}
 	
 	/**

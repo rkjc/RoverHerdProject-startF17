@@ -1,0 +1,6 @@
+targetFinderMap1.txt
+50 30 Map_Width_Height
+17 16 StartPosition(x,y)
+36 11 TargetPosition(x,y)
+PaintMap-terrain.ppm
+PaintMap-science.ppm
