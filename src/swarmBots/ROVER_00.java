@@ -73,6 +73,8 @@ public class ROVER_00 extends Rover {
 			/**
 			 *  ### Setting up variables to be used in the Rover control loop ###
 			 */
+			int stepCount = 0;	
+			String line = "";	
 			boolean goingSouth = false;
 			boolean stuck = false; // just means it did not change locations between requests,
 									// could be velocity limit or obstruction etc.
@@ -82,13 +84,8 @@ public class ROVER_00 extends Rover {
 			cardinals[0] = "N";
 			cardinals[1] = "E";
 			cardinals[2] = "S";
-			cardinals[3] = "W";
-	
-			String currentDir = cardinals[0];
-
-			int stepCount = 0;	
-			
-			String line = "";			
+			cardinals[3] = "W";	
+			String currentDir = cardinals[0];		
 			
 			/**
 			 *  ### Retrieve static values from RCP ###

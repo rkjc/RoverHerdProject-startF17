@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import common.Communication;
+import common.CommunicationHelper;
 import common.Coord;
 import common.MapTile;
 import common.Rover;
@@ -28,7 +29,6 @@ import enums.RoverDriveType;
 import enums.Science;
 import enums.Terrain;
 import rover_logic.SearchLogic;
-import supportTools.CommunicationHelper;
 
 /**
  * Created by samskim on 4/21/16.

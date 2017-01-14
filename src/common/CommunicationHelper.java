@@ -1,6 +1,4 @@
-package supportTools;
-
-import common.MapTile;
+package common;
 
 import org.json.simple.JSONObject;
 
@@ -15,7 +13,7 @@ public class CommunicationHelper {
     public static MapTile convertToMapTile(JSONObject o){
         Terrain terrain = getTerrain((String) o.get("terrain"));
         Science science = getScience((String) o.get("science"));
-        MapTile tile = new MapTile(terrain, science, 0, false);
+        MapTile tile = new MapTile(terrain, science, false);
         return tile;
     }
 

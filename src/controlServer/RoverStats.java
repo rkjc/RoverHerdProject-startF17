@@ -19,6 +19,10 @@ public class RoverStats {
 	private long lastGatherTime;
 	private long lastRequestTime;
 	private int requestCount;
+	private long powerReserve; //Battery charge - not currently used
+	private long maxPowerCap;  //Battery capacity - not currently used
+	private long powerRegenRate; //RTG output - not currently used
+	private long driveEfficiency; //wear and tear factor on the drive system - not currently used
 	
 	// public for the arrayList just because it is easier to deal with than getters/setters
     public ArrayList<Science> scienceCargo;

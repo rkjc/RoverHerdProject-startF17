@@ -46,7 +46,7 @@ public class RoverCommandProcessor {
     /**
      * The port that the server listens on.
      */
-    private static final int PORT = 9537; // because ... csula class number
+    private static final int PORT = 9537; // because ... CSULA class number CS-5337
     
     private static SwarmMapInit mapInit = new SwarmMapInit();
     private static String mapFileName = "MapDefault.txt";
@@ -57,16 +57,20 @@ public class RoverCommandProcessor {
     private static PlanetMap planetMap = null; // = new PlanetMap(mapWidth, mapHeight); 
     private static RoverLocations roverLocations = new RoverLocations();
     private static ScienceLocations scienceLocations = new ScienceLocations();
+    // need to keep a separate array of collected science for each corporation or team
     private static ArrayList<Science> collectedScience_0 = new ArrayList<Science>();
     private static ArrayList<Science> collectedScience_1 = new ArrayList<Science>();
     private static ArrayList<Science> collectedScience_2 = new ArrayList<Science>();
     private static ArrayList<ArrayList<Science>> corpCollectedScience = new ArrayList<ArrayList<Science>>();
+    private static ArrayList<String> connectedRovers = new ArrayList<String>();
+    private static HashMap<String, RoverStats> listOfRovers = new HashMap<String, RoverStats>();
+    
     
     private static long countdownTimer;
     private static boolean roversAreGO;
 	
-	static GUIdisplay mainPanel3;
-	static MyGUIWorker myWorker3;
+	static GUIdisplay mainPanel;
+	static MyGUIWorker myWorker;
     
 	// Length of time allowed for the rovers to get back to the retrieval zone
 	static final int MAXIMUM_ACTIVITY_TIME_LIMIT = 300000; // 10 Minutes = 600,000, 5 Minutes = 300,000
@@ -108,6 +112,7 @@ public class RoverCommandProcessor {
         System.out.println("The Swarm server is running.");
         ServerSocket listener = new ServerSocket(PORT);
         
+        //this is for general accounting on harvesting
         corpCollectedScience.add(collectedScience_0);
         corpCollectedScience.add(collectedScience_1);
         corpCollectedScience.add(collectedScience_2);
@@ -122,16 +127,14 @@ public class RoverCommandProcessor {
         
         countdownTimer = System.currentTimeMillis();
 		
-		mainPanel3 = new GUIdisplay(mapWidth, mapHeight, MAXIMUM_ACTIVITY_TIME_LIMIT);
-		myWorker3 = new MyGUIWorker(mainPanel3);
+		mainPanel = new GUIdisplay(mapWidth, mapHeight, MAXIMUM_ACTIVITY_TIME_LIMIT);
+		myWorker = new MyGUIWorker(mainPanel);
 		
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				// currently sending it when calling the updateGUIDisplay() method
-//**			GUIdisplay.createAndShowGui(myWorker, mainPanel);
-				//GUIdisplay2.createAndShowGui(myWorker2, mainPanel2);
-				GUIdisplay.createAndShowGui(myWorker3, mainPanel3);
+				GUIdisplay.createAndShowGui(myWorker, mainPanel);
 				try {
 					updateGUIDisplay();
 				} catch (Exception e) {				
@@ -141,6 +144,7 @@ public class RoverCommandProcessor {
 		});
 		       
         try {
+        	//listening loop
             while (true) {
                 new Handler(listener.accept()).start();
             }
@@ -151,7 +155,7 @@ public class RoverCommandProcessor {
 
     /**
      * A handler thread class.  Handlers are spawned from the listening
-     * loop and are responsible for a dealing with a single client
+     * loop and are responsible for dealing with a single client
      * and processing its messages.
      */
     private static class Handler extends Thread {
@@ -177,7 +181,7 @@ public class RoverCommandProcessor {
 
         /**
          * Services this thread's client by repeatedly requesting a Rover nameType
-         * Then runs the Rover environment simulator server process        
+         * Then runs the Rover Command Process simulator server        
          */
         public void run() {
             try {
@@ -194,23 +198,27 @@ public class RoverCommandProcessor {
                     System.out.println(roverNameString + " has connected to server");
                     if (roverNameString == null) {
                         return;
+                    } else if (connectedRovers.contains(roverNameString)){
+                    	System.out.println(roverNameString + " is already connected to server");
+                    	return;
                     } else {
                     	break;
                     }
                 }
+                connectedRovers.add(roverNameString);
                 
-                // TODO check to see if this rover thread already exists.
-                // if exists and is active - refuse connection
-                // if exists and socket is not active - reconnect to that socket
-                // enforce time limit between reconnection to minimize spamming
+                // make and instantiate a Rover object connected to this thread if one does not exist
+                RoverStats rover;
+                if(listOfRovers.containsKey(roverNameString)){
+                	rover = listOfRovers.get(roverNameString);
+                } else {                	
+                	RoverConfiguration rConfig = RoverConfiguration.getEnum(roverNameString); 
+  	                rover = new RoverStats(rConfig);
+  	                listOfRovers.put(roverNameString, rover);
+                }
                 
-                // make and instantiate a Rover object connected to this thread
-                RoverConfiguration rname = RoverConfiguration.getEnum(roverNameString); 
-                RoverStats rover = new RoverStats(rname);
-                
-                
-                
-                // ##### Run the Rover server process #####
+
+                // ##### Run the Rover Control Processor server #####
                 while (roversAreGO) {	
                 	//read command input from the Rover
                     String input = inFromRover.readLine();
@@ -422,11 +430,13 @@ public class RoverCommandProcessor {
                              
                 }
             } catch (IOException e) {
+            	connectedRovers.remove(roverNameString);
                 System.out.println(e);
             } catch (Exception e) {
 				e.printStackTrace();
 			} finally {
                 try {
+                	connectedRovers.remove(roverNameString);
                     socket.close();
                 } catch (IOException e) {  }
             }
@@ -787,11 +797,11 @@ public class RoverCommandProcessor {
 	}
     
 	static void updateGUIDisplay() throws Exception{
-		myWorker3.displayFullMap(roverLocations.clone(), scienceLocations, planetMap);
+		myWorker.displayFullMap(roverLocations.clone(), scienceLocations, planetMap);
 	}
 	
 	static void scoreDisplayUpdate() throws Exception{
-		myWorker3.displayScore(corpCollectedScience);
+		myWorker.displayScore(corpCollectedScience);
 	}
 	
 	static void stopRoverAreGO(){

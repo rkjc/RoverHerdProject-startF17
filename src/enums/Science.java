@@ -9,13 +9,24 @@ public enum Science {
 	CRYSTAL("C");
 
 	private final String value;
+	private String scannedByRover;
+	private String harvestedByRover;
 	
+	//constructor
 	private Science(String value) {
 		this.value = value;
 	}
 
 	public String getSciString() {
 		return value;
+	}
+	
+	public String getScannedBy() {
+		return scannedByRover;
+	}
+	
+	public String getHarvestedBy() {
+		return harvestedByRover;
 	}
 	
     public static Science getEnum(String input){
