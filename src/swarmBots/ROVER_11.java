@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import common.Communication;
 import common.Coord;
 import common.MapTile;
+import common.Rover;
 import common.ScanMap;
 
 import org.json.simple.JSONArray;
@@ -32,7 +33,7 @@ import supportTools.CommunicationHelper;
 /**
  * Created by samskim on 4/21/16.
  */
-public class ROVER_11 {
+public class ROVER_11 extends Rover {
 
     BufferedReader in;
     PrintWriter out;
@@ -208,7 +209,7 @@ public class ROVER_11 {
 
             // ***** do a SCAN *****
             //System.out.println("ROVER_11 sending SCAN request");
-            this.doScan();
+            scanMap = this.doScan();
             scanMap.debugPrintMap();
 
             // upon scan, update my field map
@@ -434,7 +435,7 @@ public class ROVER_11 {
 
     // ################ Support Methods ###########################
 
-    private void clearReadLineBuffer() throws IOException {
+    protected void clearReadLineBuffer() throws IOException {
         while (in.ready()) {
             //System.out.println("ROVER_11 clearing readLine()");
             String garbage = in.readLine();
@@ -443,7 +444,7 @@ public class ROVER_11 {
 
 
     // method to retrieve a list of the rover's equipment from the server
-    private ArrayList<String> getEquipment() throws IOException {
+    protected ArrayList<String> getEquipment() throws IOException {
         //System.out.println("ROVER_11 method getEquipment()");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         out.println("EQUIPMENT");
@@ -482,7 +483,7 @@ public class ROVER_11 {
 
 
     // sends a SCAN request to the server and puts the result in the scanMap array
-    public void doScan() throws IOException {
+    public ScanMap doScan() throws IOException {
         //System.out.println("ROVER_11 method doScan()");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         out.println("SCAN");
@@ -505,7 +506,7 @@ public class ROVER_11 {
         } else {
             // in case the server call gives unexpected results
             clearReadLineBuffer();
-            return; // server response did not start with "SCAN"
+            return null; // server response did not start with "SCAN"
         }
         //System.out.println("ROVER_11 finished scan while");
 
@@ -515,7 +516,8 @@ public class ROVER_11 {
 
         //System.out.println("ROVER_11 convert from json back to ScanMap class");
         // convert from the json string back to a ScanMap object
-        scanMap = gson.fromJson(jsonScanMapString, ScanMap.class);
+        //scanMap = gson.fromJson(jsonScanMapString, ScanMap.class);
+        return gson.fromJson(jsonScanMapString, ScanMap.class);
     }
 
 

@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 
 import common.Coord;
 import common.MapTile;
+import common.Rover;
 import common.ScanMap;
 import enums.Terrain;
 
@@ -27,7 +28,7 @@ import enums.Terrain;
  * * http://cs.lmu.edu/~ray/notes/javanetexamples/ Many thanks to the authors for
  */
 
-public class ROVER_99 {
+public class ROVER_99 extends Rover {
 
 	BufferedReader in;
 	PrintWriter out;
@@ -120,7 +121,7 @@ public class ROVER_99 {
             }
 			if (line.startsWith("LOC")) {
 				// loc = line.substring(4);
-				currentLoc = extractLOC(line);
+				currentLoc = extractLocationFromString(line);
 			}
 			System.out.println("ROVER_99 currentLoc at start: " + currentLoc);
 			
@@ -210,7 +211,7 @@ public class ROVER_99 {
 			out.println("LOC");
 			line = in.readLine();
 			if (line.startsWith("LOC")) {
-				currentLoc = extractLOC(line);
+				currentLoc = extractLocationFromString(line);
 			}
 
 			System.out.println("ROVER_99 currentLoc after recheck: " + currentLoc);
@@ -233,104 +234,10 @@ public class ROVER_99 {
 
 	// ################ Support Methods ###########################
 	
-	private void clearReadLineBuffer() throws IOException{
-		while(in.ready()){
-			//System.out.println("ROVER_99 clearing readLine()");
-			String garbage = in.readLine();	
-		}
-	}
+
 	
 
-	// method to retrieve a list of the rover's equipment from the server
-	private ArrayList<String> getEquipment() throws IOException {
-		//System.out.println("ROVER_99 method getEquipment()");
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		out.println("EQUIPMENT");
-		
-		String jsonEqListIn = in.readLine(); //grabs the string that was returned first
-		if(jsonEqListIn == null){
-			jsonEqListIn = "";
-		}
-		StringBuilder jsonEqList = new StringBuilder();
-		//System.out.println("ROVER_99 incomming EQUIPMENT result - first readline: " + jsonEqListIn);
-		
-		if(jsonEqListIn.startsWith("EQUIPMENT")){
-			while (!(jsonEqListIn = in.readLine()).equals("EQUIPMENT_END")) {
-				if(jsonEqListIn == null){
-					break;
-				}
-				//System.out.println("ROVER_99 incomming EQUIPMENT result: " + jsonEqListIn);
-				jsonEqList.append(jsonEqListIn);
-				jsonEqList.append("\n");
-				//System.out.println("ROVER_99 doScan() bottom of while");
-			}
-		} else {
-			// in case the server call gives unexpected results
-			clearReadLineBuffer();
-			return null; // server response did not start with "EQUIPMENT"
-		}
-		
-		String jsonEqListString = jsonEqList.toString();		
-		ArrayList<String> returnList;		
-		returnList = gson.fromJson(jsonEqListString, new TypeToken<ArrayList<String>>(){}.getType());		
-		//System.out.println("ROVER_99 returnList " + returnList);
-		
-		return returnList;
-	}
-	
 
-	// sends a SCAN request to the server and puts the result in the scanMap array
-	public void doScan() throws IOException {
-		//System.out.println("ROVER_99 method doScan()");
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		out.println("SCAN");
-
-		String jsonScanMapIn = in.readLine(); //grabs the string that was returned first
-		if(jsonScanMapIn == null){
-			System.out.println("ROVER_99 check connection to server");
-			jsonScanMapIn = "";
-		}
-		StringBuilder jsonScanMap = new StringBuilder();
-		System.out.println("ROVER_99 incomming SCAN result - first readline: " + jsonScanMapIn);
-		
-		if(jsonScanMapIn.startsWith("SCAN")){	
-			while (!(jsonScanMapIn = in.readLine()).equals("SCAN_END")) {
-				//System.out.println("ROVER_99 incomming SCAN result: " + jsonScanMapIn);
-				jsonScanMap.append(jsonScanMapIn);
-				jsonScanMap.append("\n");
-				//System.out.println("ROVER_99 doScan() bottom of while");
-			}
-		} else {
-			// in case the server call gives unexpected results
-			clearReadLineBuffer();
-			return; // server response did not start with "SCAN"
-		}
-		//System.out.println("ROVER_99 finished scan while");
-
-		String jsonScanMapString = jsonScanMap.toString();
-		// debug print json object to a file
-		//new MyWriter( jsonScanMapString, 0);  //gives a strange result - prints the \n instead of newline character in the file
-
-		//System.out.println("ROVER_99 convert from json back to ScanMap class");
-		// convert from the json string back to a ScanMap object
-		scanMap = gson.fromJson(jsonScanMapString, ScanMap.class);		
-	}
-	
-
-	// this takes the LOC response string, parses out the x and x values and
-	// returns a Coord object
-	public static Coord extractLOC(String sStr) {
-		sStr = sStr.substring(4);
-		if (sStr.lastIndexOf(" ") != -1) {
-			String xStr = sStr.substring(0, sStr.lastIndexOf(" "));
-			//System.out.println("extracted xStr " + xStr);
-
-			String yStr = sStr.substring(sStr.lastIndexOf(" ") + 1);
-			//System.out.println("extracted yStr " + yStr);
-			return new Coord(Integer.parseInt(xStr), Integer.parseInt(yStr));
-		}
-		return null;
-	}
 	
 	
 

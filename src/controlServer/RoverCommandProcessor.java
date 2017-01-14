@@ -24,12 +24,11 @@ import com.google.gson.GsonBuilder;
 import common.Coord;
 import common.MapTile;
 import common.PlanetMap;
-import common.Rover;
 import common.RoverLocations;
 import common.ScanMap;
 import common.ScienceLocations;
 import enums.RoverDriveType;
-import enums.RoverName;
+import enums.RoverConfiguration;
 import enums.RoverToolType;
 import enums.Science;
 import enums.Terrain;
@@ -42,7 +41,7 @@ import supportTools.SwarmMapInit;
  * Many thanks to the authors for publishing their code examples
  */
 
-public class SwarmServer {
+public class RoverCommandProcessor {
 
     /**
      * The port that the server listens on.
@@ -66,8 +65,8 @@ public class SwarmServer {
     private static long countdownTimer;
     private static boolean roversAreGO;
 	
-	static GUIdisplay3 mainPanel3;
-	static MyGUIWorker3 myWorker3;
+	static GUIdisplay mainPanel3;
+	static MyGUIWorker myWorker3;
     
 	// Length of time allowed for the rovers to get back to the retrieval zone
 	static final int MAXIMUM_ACTIVITY_TIME_LIMIT = 300000; // 10 Minutes = 600,000, 5 Minutes = 300,000
@@ -123,8 +122,8 @@ public class SwarmServer {
         
         countdownTimer = System.currentTimeMillis();
 		
-		mainPanel3 = new GUIdisplay3(mapWidth, mapHeight, MAXIMUM_ACTIVITY_TIME_LIMIT);
-		myWorker3 = new MyGUIWorker3(mainPanel3);
+		mainPanel3 = new GUIdisplay(mapWidth, mapHeight, MAXIMUM_ACTIVITY_TIME_LIMIT);
+		myWorker3 = new MyGUIWorker(mainPanel3);
 		
 		
 		SwingUtilities.invokeLater(new Runnable() {
@@ -132,7 +131,7 @@ public class SwarmServer {
 				// currently sending it when calling the updateGUIDisplay() method
 //**			GUIdisplay.createAndShowGui(myWorker, mainPanel);
 				//GUIdisplay2.createAndShowGui(myWorker2, mainPanel2);
-				GUIdisplay3.createAndShowGui(myWorker3, mainPanel3);
+				GUIdisplay.createAndShowGui(myWorker3, mainPanel3);
 				try {
 					updateGUIDisplay();
 				} catch (Exception e) {				
@@ -206,8 +205,8 @@ public class SwarmServer {
                 // enforce time limit between reconnection to minimize spamming
                 
                 // make and instantiate a Rover object connected to this thread
-                RoverName rname = RoverName.getEnum(roverNameString); 
-                Rover rover = new Rover(rname);
+                RoverConfiguration rname = RoverConfiguration.getEnum(roverNameString); 
+                RoverStats rover = new RoverStats(rname);
                 
                 
                 
@@ -439,7 +438,7 @@ public class SwarmServer {
         
 
         // *** SCAN ***
-		private String retriveScanMap(Rover thisRover) {
+		private String retriveScanMap(RoverStats thisRover) {
 			//System.out.println("SWARM: ------ SCAN ------"); //debug test input parsing
 			Gson gson = new GsonBuilder()
         			.setPrettyPrinting()
@@ -506,7 +505,7 @@ public class SwarmServer {
 
    
     // ** MOVE **
-    static Coord doMove(Rover thisRover, String requestedMoveDir) throws Exception{ 
+    static Coord doMove(RoverStats thisRover, String requestedMoveDir) throws Exception{ 
     	// *** pay close attention to this "synchronized" and make sure it works as intended ***
     	// MOVE has to lock the roverLocations list because it needs to change it's contents
     	synchronized (roverLocations){
@@ -801,7 +800,7 @@ public class SwarmServer {
 	}
 	
 	// sad face - more hard coded bs
-	private static int getCorpNumber(Rover aRover){
+	private static int getCorpNumber(RoverStats aRover){
 		int tnum = 0;
 		String roverNumber = aRover.getRoverName().toString().substring(6);
 		// check for Blue Corp - return int 1
@@ -822,7 +821,7 @@ public class SwarmServer {
 
 class TimeLimitStop implements ActionListener {	
 	public void actionPerformed(ActionEvent event) {
-		SwarmServer.stopRoverAreGO();
+		RoverCommandProcessor.stopRoverAreGO();
 		System.out.println("Time is up - Return mission is launching");
 		Toolkit.getDefaultToolkit().beep();
 	}

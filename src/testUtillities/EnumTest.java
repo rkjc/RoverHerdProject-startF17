@@ -1,6 +1,6 @@
 package testUtillities;
 
-import enums.RoverName;
+import enums.RoverConfiguration;
 
 public class EnumTest {
 
@@ -9,7 +9,7 @@ public class EnumTest {
 
 		System.out.println("ENUM_TEST: starting");
 		
-		System.out.println("ENUM_TEST: toString RoverName.ROVER_00 " + RoverName.ROVER_00.toString());	
+		System.out.println("ENUM_TEST: toString RoverName.ROVER_00 " + RoverConfiguration.ROVER_00.toString());	
 		
 		
 		try {

@@ -3,7 +3,7 @@ package common;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import enums.RoverName;
+import enums.RoverConfiguration;
 import enums.Science;
 
 public class ScienceLocations {

@@ -16,6 +16,8 @@ import java.net.URL;
 
 /**
  * Created by samskim on 5/12/16.
+ * 
+ * This class is the interface to the SwarmCommunicationServer nodejs/javascript program
  */
 public class Communication {
 

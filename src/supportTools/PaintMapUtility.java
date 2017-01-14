@@ -15,7 +15,7 @@ import common.MapTile;
 import common.PlanetMap;
 import common.RoverLocations;
 import common.ScienceLocations;
-import enums.RoverName;
+import enums.RoverConfiguration;
 import enums.Science;
 import enums.Terrain;
 
@@ -233,7 +233,7 @@ public class PaintMapUtility {
 					randomRover.remove(getIndex);
 					System.out.println("found rover= " + rName);
 					
-					roverLocations.putRover(RoverName.getEnum(rName), new Coord(i, yPos));
+					roverLocations.putRover(RoverConfiguration.getEnum(rName), new Coord(i, yPos));
 				}
 				
 				//setup the sample rovers
@@ -243,7 +243,7 @@ public class PaintMapUtility {
 					String rName = "ROVER_" + Integer.toString(sB).substring(1);
 					System.out.println("found rover= " + rName);
 					
-					roverLocations.putRover(RoverName.getEnum(rName), new Coord(i, yPos));
+					roverLocations.putRover(RoverConfiguration.getEnum(rName), new Coord(i, yPos));
 				}
 				
 				
