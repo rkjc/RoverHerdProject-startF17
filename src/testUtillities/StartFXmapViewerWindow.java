@@ -10,7 +10,8 @@ public class StartFXmapViewerWindow {
 		RoverLocations roverLocations = new RoverLocations();
 		roverLocations.loadSmallExampleTestRoverLocations();
 
-		Thread thread = new Thread(new FXmapViewerWindow(roverLocations));
+		FXmapViewerWindow viewWin = new FXmapViewerWindow(roverLocations);
+		Thread thread = new Thread(viewWin);
 		thread.start();
 	}
 
