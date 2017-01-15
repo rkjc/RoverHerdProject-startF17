@@ -2,13 +2,13 @@ package testUtillities;
 
 import java.util.ArrayList;
 
-import common.Rover;
-import enums.RoverName;
+import controlServer.RoverStats;
+import enums.RoverConfiguration;
 
 public class TestBuildaRover {
 	public static void main(String[] args) {
 		System.out.println("test builda running");
-		Rover bob = new Rover(RoverName.ROVER_00);
+		RoverStats bob = new RoverStats(RoverConfiguration.ROVER_00);
 		
 		System.out.println("rover name " + bob.getRoverName());
 		System.out.println("rover movetime " + bob.getRoverLastMoveTime());

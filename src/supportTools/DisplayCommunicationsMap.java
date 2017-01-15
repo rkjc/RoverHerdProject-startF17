@@ -9,6 +9,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import common.Communication;
+import common.CommunicationHelper;
 import common.Coord;
 import common.MapTile;
 import common.ScanMap;

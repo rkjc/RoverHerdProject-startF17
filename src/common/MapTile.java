@@ -1,37 +1,34 @@
 package common;
 
-import enums.RoverName;
+import enums.RoverConfiguration;
 import enums.Science;
 import enums.Terrain;
 
 public class MapTile {
 	private Terrain terrain;
-	private int elevation;	// not currently used
+	public int elevation = 0;	// not currently used
+	public int count = 0;  //undefined usage, possibly use on ScanMap for tracking visits
 	private Science science;	//for use on ScanMap, not used on PlanetMap
 	private boolean hasRover;	//for use on ScanMap, not used on PlanetMap
-	
+	private String scannedBy = null; //for keeping track of which rover first discovered this tile
 	
 	public MapTile(){
-		terrain = Terrain.SOIL;
-		science = Science.NONE;
-		elevation = 0;
-		hasRover = false;
+		this.terrain = Terrain.SOIL;
+		this.science = Science.NONE;
+		this.hasRover = false;
 	}
 	
 	public MapTile(int notUsed){
 		// use any integer as an argument to create MapTile with no terrain
-		terrain = Terrain.NONE;
-		science = Science.NONE;
-		elevation = 0;
-		hasRover = false;
+		this.terrain = Terrain.NONE;
+		this.science = Science.NONE;
+		this.hasRover = false;
 	}
 	
 	public MapTile(String terrainLetter){
 		// use appropriate string to create MapTile with matching terrain
 		this.terrain = Terrain.getEnum(terrainLetter);
-		
 		this.science = Science.NONE;
-		this.elevation = 0;
 		this.hasRover = false;
 	}
 	
@@ -42,6 +39,12 @@ public class MapTile {
 		this.hasRover = false;
 	}
 	
+	public MapTile(Terrain ter, Science sci, boolean hasR){
+		this.terrain = ter;
+		this.science = sci;
+		this.hasRover = hasR;
+	}
+	
 	public MapTile(Terrain ter, Science sci, int elev, boolean hasR){
 		this.terrain = ter;
 		this.science = sci;
@@ -49,8 +52,17 @@ public class MapTile {
 		this.hasRover = hasR;
 	}
 	
+	public MapTile(Terrain ter, Science sci, int elev, boolean hasR, String scanBy, int cnt){
+		this.terrain = ter;
+		this.science = sci;
+		this.elevation = elev;
+		this.hasRover = hasR;
+		this.count = cnt;
+		this.scannedBy = scanBy;
+	}
+	
 	public MapTile getCopyOfMapTile(){
-		MapTile rTile = new MapTile(this.terrain, this.science, this.elevation, this.hasRover);	
+		MapTile rTile = new MapTile(this.terrain, this.science, this.elevation, this.hasRover, this.scannedBy, this.count);	
 		return rTile;
 	}
 
@@ -72,7 +84,11 @@ public class MapTile {
 		return this.hasRover;
 	}
 	
-	// well, this probably broke the thread safe rule
+	public String getScannedBy() {
+		return this.scannedBy;
+	}
+	
+	// well, this might have broke the thread safe rule
 	
 	public void setHasRoverTrue(){
 		this.hasRover = true;
@@ -84,5 +100,14 @@ public class MapTile {
 	
 	public void setScience(Science sci){
 		this.science = sci;
+	}
+	
+	public boolean setScannedBy(String roverName) {
+		if(this.scannedBy == null){
+			this.scannedBy = roverName;
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

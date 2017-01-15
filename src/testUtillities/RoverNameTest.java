@@ -1,7 +1,7 @@
 package testUtillities;
 
-import common.Rover;
-import enums.RoverName;
+import controlServer.RoverStats;
+import enums.RoverConfiguration;
 
 public class RoverNameTest {
 	public static void main(String[] args) {
@@ -9,7 +9,7 @@ public class RoverNameTest {
 		
 		String name = "ROVER_00";
 				
-        RoverName rname = RoverName.getEnum(name); 
+        RoverConfiguration rname = RoverConfiguration.getEnum(name); 
         
         System.out.println("SWARM: make a rover name " + rname);
         

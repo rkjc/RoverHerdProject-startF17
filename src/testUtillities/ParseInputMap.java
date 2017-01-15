@@ -12,7 +12,7 @@ import common.MapTile;
 import common.PlanetMap;
 import common.RoverLocations;
 import common.ScienceLocations;
-import enums.RoverName;
+import enums.RoverConfiguration;
 import enums.Science;
 import enums.Terrain;
 import supportTools.SwarmMapInit;
@@ -69,7 +69,7 @@ public class ParseInputMap {
 					if(isInteger(tstr)){
 						String rName = "ROVER_" + tstr;
 						System.out.print(rName);
-						roverLocations.putRover(RoverName.getEnum(rName), new Coord(i, yPos));
+						roverLocations.putRover(RoverConfiguration.getEnum(rName), new Coord(i, yPos));
 					} else if(tstr.startsWith("__") || tstr.startsWith("  ")){
 						System.out.print( tstr + " - ");
 					} else {

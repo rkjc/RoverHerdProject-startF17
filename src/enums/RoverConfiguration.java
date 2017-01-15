@@ -11,7 +11,7 @@ import java.util.List;
 
 // Harvesting tools: EXCAVATOR->Soil and Sand;  DRILL->Rocks and Gravel
 
-public enum RoverName {
+public enum RoverConfiguration {
 	// (Drive type, accessory slot 1, accessory slot 2)
 	NONE,
 	
@@ -52,7 +52,7 @@ public enum RoverName {
 	ROVER_99 ("TREADS", "SPECTRAL_SENSOR", "CHEMICAL_SENSOR");
 	
     private final List<String> members;
-    private RoverName(String... members){
+    private RoverConfiguration(String... members){
         this.members=Arrays.asList(members);
     }
     public List<String> getMembers(){
@@ -60,107 +60,107 @@ public enum RoverName {
         return new ArrayList<String>(members);
     }
     
-    public static RoverName getEnum(String input){
-    	RoverName output;
+    public static RoverConfiguration getEnum(String input){
+    	RoverConfiguration output;
     	
     	switch(input){
     	case "ROVER_00":
-    		output = RoverName.ROVER_00;
+    		output = RoverConfiguration.ROVER_00;
     		break;
     	case "ROVER_01":
-    		output = RoverName.ROVER_01;
+    		output = RoverConfiguration.ROVER_01;
     		break;
     	case "ROVER_02":
-    		output = RoverName.ROVER_02;
+    		output = RoverConfiguration.ROVER_02;
     		break;
     	case "ROVER_03":
-    		output = RoverName.ROVER_03;
+    		output = RoverConfiguration.ROVER_03;
     		break;
     	case "ROVER_04":
-    		output = RoverName.ROVER_04;
+    		output = RoverConfiguration.ROVER_04;
     		break;
     	case "ROVER_05":
-    		output = RoverName.ROVER_05;
+    		output = RoverConfiguration.ROVER_05;
     		break;
     	case "ROVER_06":
-    		output = RoverName.ROVER_06;
+    		output = RoverConfiguration.ROVER_06;
     		break;
     	case "ROVER_07":
-    		output = RoverName.ROVER_07;
+    		output = RoverConfiguration.ROVER_07;
     		break;
     	case "ROVER_08":
-    		output = RoverName.ROVER_08;
+    		output = RoverConfiguration.ROVER_08;
     		break;
     	case "ROVER_09":
-    		output = RoverName.ROVER_09;
+    		output = RoverConfiguration.ROVER_09;
     		break;
     	case "ROVER_10":
-    		output = RoverName.ROVER_10;
+    		output = RoverConfiguration.ROVER_10;
     		break;
     	case "ROVER_11":
-    		output = RoverName.ROVER_11;
+    		output = RoverConfiguration.ROVER_11;
     		break;
     	case "ROVER_12":
-    		output = RoverName.ROVER_12;
+    		output = RoverConfiguration.ROVER_12;
     		break;    		
     	case "ROVER_13":
-    		output = RoverName.ROVER_13;
+    		output = RoverConfiguration.ROVER_13;
     		break;
     	case "ROVER_14":
-    		output = RoverName.ROVER_14;
+    		output = RoverConfiguration.ROVER_14;
     		break;
     	case "ROVER_15":
-    		output = RoverName.ROVER_15;
+    		output = RoverConfiguration.ROVER_15;
     		break;
     	case "ROVER_16":
-    		output = RoverName.ROVER_16;
+    		output = RoverConfiguration.ROVER_16;
     		break;
     	case "ROVER_17":
-    		output = RoverName.ROVER_17;
+    		output = RoverConfiguration.ROVER_17;
     		break;
     	case "ROVER_18":
-    		output = RoverName.ROVER_18;
+    		output = RoverConfiguration.ROVER_18;
     		break;
     	case "ROVER_19":
-    		output = RoverName.ROVER_19;
+    		output = RoverConfiguration.ROVER_19;
     		break;
     	case "ROVER_20":
-    		output = RoverName.ROVER_20;
+    		output = RoverConfiguration.ROVER_20;
     		break;
     	
     	// Sample Rover Set
     	case "ROVER_90":
-    		output = RoverName.ROVER_90;
+    		output = RoverConfiguration.ROVER_90;
     		break;
     	case "ROVER_91":
-    		output = RoverName.ROVER_91;
+    		output = RoverConfiguration.ROVER_91;
     		break;
     	case "ROVER_92":
-    		output = RoverName.ROVER_92;
+    		output = RoverConfiguration.ROVER_92;
     		break;    		
     	case "ROVER_93":
-    		output = RoverName.ROVER_93;
+    		output = RoverConfiguration.ROVER_93;
     		break;
     	case "ROVER_94":
-    		output = RoverName.ROVER_94;
+    		output = RoverConfiguration.ROVER_94;
     		break;
     	case "ROVER_95":
-    		output = RoverName.ROVER_95;
+    		output = RoverConfiguration.ROVER_95;
     		break;
     	case "ROVER_96":
-    		output = RoverName.ROVER_96;
+    		output = RoverConfiguration.ROVER_96;
     		break;
     	case "ROVER_97":
-    		output = RoverName.ROVER_97;
+    		output = RoverConfiguration.ROVER_97;
     		break;
     	case "ROVER_98":
-    		output = RoverName.ROVER_98;
+    		output = RoverConfiguration.ROVER_98;
     		break;
     	case "ROVER_99":
-    		output = RoverName.ROVER_99;
+    		output = RoverConfiguration.ROVER_99;
     		break;
     	default:
-    		output = RoverName.NONE;
+    		output = RoverConfiguration.NONE;
     	}	
     	return output;
     }

@@ -1,4 +1,4 @@
-package common;
+package UI_support;
 
 import java.awt.Color;
 import java.awt.geom.Line2D;

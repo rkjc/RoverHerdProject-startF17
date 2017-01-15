@@ -1,99 +1,195 @@
 package common;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import enums.RoverDriveType;
-import enums.RoverName;
-import enums.RoverToolType;
-import enums.Science;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 public class Rover {
-	private RoverDriveType driveType;
-	private RoverName roverName;
-	private RoverToolType tool_1;
-	private RoverToolType tool_2;
-	private long lastMoveTime;
-	private long lastGatherTime;
-	private long lastRequestTime;
-	private int requestCount;
-	
-	// public for the arrayList just because it is easier to deal with than getters/setters
-    public ArrayList<Science> scienceCargo;
-	
-	
-	public Rover(RoverName rname){
-		this.roverName = rname;
-		System.out.println("ROVER: building a rover " + rname);
-		// Rover type equipment is stored in the RoverName enum
-		
-		// use the RoverName to get the drive type string, use the string to get the enum type
-		String drivetype = rname.getMembers().get(0);
-		System.out.println("ROVER: drivetype " + drivetype);
-		RoverDriveType dtype = RoverDriveType.getEnum(drivetype);
-		
-		// use the drive type enum to set this rover object drive type
-		this.driveType = dtype;
-		System.out.println("ROVER: this.drivetype " + dtype);
-		
-		//tool 1 and 2 uses the same procedure as setting the drivetype
-		String tt1 = rname.getMembers().get(1);
-		System.out.println("ROVER: tt1 string is " + tt1);
-		RoverToolType ttype1 = RoverToolType.getEnum(tt1);
-		this.tool_1 = ttype1;
-		System.out.println("ROVER: this.tool_1 " + ttype1);
-		
-        // Make an arrayList to hold any collected Science
-        scienceCargo = new ArrayList<Science>();
-		
-		RoverToolType ttype2 = RoverToolType.getEnum(rname.getMembers().get(2));
-		this.tool_2 = ttype2;
-		System.out.println("ROVER: this.tool_2 " + ttype2);
-		
-		requestCount = 0;
-		
-		//stores the current timestamp
-		this.lastMoveTime = System.currentTimeMillis();
-		this.lastRequestTime = System.currentTimeMillis();
-	}
-	
-	public RoverName getRoverName(){
-		return this.roverName;
-	}
-	
-	public RoverDriveType getRoverDrive(){
-		return this.driveType;
-	}
-	
-	public RoverToolType getTool_1(){
-		return this.tool_1;		
-	}
-	
-	public RoverToolType getTool_2(){
-		return this.tool_2;		
-	}
-	
-	public long getRoverLastGatherTime(){
-		return this.lastGatherTime;
-	}
-	public void updateGatherTime(){
-		this.lastGatherTime = System.currentTimeMillis();
-	}
-	
-	public long getRoverLastMoveTime(){
-		return this.lastMoveTime;
-	}
-	public void updateMoveTime(){
-		this.lastMoveTime = System.currentTimeMillis();
-	}
-	
-	public long getRoverRequestCount(){
-		if((System.currentTimeMillis() - lastRequestTime) < 1000){
-			++requestCount;
-		} else {
-			lastRequestTime = System.currentTimeMillis();
-			requestCount = 0;
-		}	
-		return this.requestCount;
-	}
 
+	// setup the RoverCommandProcessor links
+	protected BufferedReader receiveFrom_RCP;
+	protected PrintWriter sendTo_RCP;
+	
+	public String rovername;
+	public ScanMap scanMap;
+	public int sleepTime;
+	public String SERVER_ADDRESS = "localhost";
+	
+	public String timeRemaining;
+	public Coord currentLoc = null;
+	public Coord previousLoc = null;
+	public Coord StartLocation = null;
+	public Coord TargetLocation = null;
+	
+	public ArrayList<String> equipment = new ArrayList<String>();
+	
+	// Hardcoded port number for the CS-5337 class
+	protected static final int PORT_ADDRESS = 9537;
+	
+	//TODO add code to the move methods to check for impassable terrain
+	protected void moveNorth(){
+		sendTo_RCP.println("MOVE N");
+	}
+	
+	protected void moveSouth(){
+		sendTo_RCP.println("MOVE S");
+	}
+	
+	protected void moveEast(){
+		sendTo_RCP.println("MOVE E");
+	}
+	
+	protected void moveWest(){
+		sendTo_RCP.println("MOVE W");
+	}
+	
+	protected Coord getStartLocation() throws IOException{
+		String line = null;
+		sendTo_RCP.println("START_LOC");
+		line = receiveFrom_RCP.readLine();
+	    if (line == null) {
+	    	System.out.println(rovername + " check connection to server");
+	    	line = "";
+	    }
+		if (line.startsWith("START_LOC")) {
+			return extractLocationFromString(line);
+		}
+		return null;
+	}
+	
+	protected Coord getTargetLocation() throws IOException{
+		String line = null;
+		sendTo_RCP.println("TARGET_LOC");
+		line = receiveFrom_RCP.readLine();
+	    if (line == null) {
+	    	System.out.println(rovername + " check connection to server");
+	    	line = "";
+	    }
+		if (line.startsWith("TARGET_LOC")) {
+			return extractLocationFromString(line);
+		}
+		return null;
+	}
+	
+	protected Coord getCurrentLocation() throws IOException{
+		String line = null;
+		sendTo_RCP.println("LOC");
+		line = receiveFrom_RCP.readLine();
+		if(line == null){
+			System.out.println("ROVER_00 check connection to server");
+			line = "";
+		}
+		if (line.startsWith("LOC")) {
+			return extractLocationFromString(line);				
+		}
+		return null;
+	}
+	
+	protected void clearReadLineBuffer() throws IOException{
+		while(receiveFrom_RCP.ready()){
+			receiveFrom_RCP.readLine();	
+		}
+	}
+	
+	protected String getTimeRemaining() throws IOException{
+		String line;
+		String timeRemaining = null;
+		sendTo_RCP.println("TIMER");
+		line = receiveFrom_RCP.readLine();
+        if (line == null) {
+        	System.out.println(rovername + " check connection to server");
+        	line = "";
+        }
+		if (line.startsWith("TIMER")) {
+			timeRemaining = line.substring(6);
+			System.out.println(rovername + " timeRemaining: " + timeRemaining);
+		}
+		return timeRemaining;
+	}
+	
+	// method to retrieve a list of the rover's EQUIPMENT from the server
+	protected ArrayList<String> getEquipment() throws IOException {
+		Gson gson = new GsonBuilder()
+    			.setPrettyPrinting()
+    			.enableComplexMapKeySerialization()
+    			.create();
+		sendTo_RCP.println("EQUIPMENT");
+		
+		String jsonEqListIn = receiveFrom_RCP.readLine(); //grabs the string that was returned first
+		if(jsonEqListIn == null){
+			jsonEqListIn = "";
+		}
+		StringBuilder jsonEqList = new StringBuilder();
+		
+		if(jsonEqListIn.startsWith("EQUIPMENT")){
+			while (!(jsonEqListIn = receiveFrom_RCP.readLine()).equals("EQUIPMENT_END")) {
+				if(jsonEqListIn == null){
+					break;
+				}
+				jsonEqList.append(jsonEqListIn);
+				jsonEqList.append("\n");
+			}
+		} else {
+			// in case the server call gives unexpected results
+			clearReadLineBuffer();
+			return null; // server response did not start with "EQUIPMENT"
+		}
+		
+		String jsonEqListString = jsonEqList.toString();		
+		ArrayList<String> returnList;		
+		returnList = gson.fromJson(jsonEqListString, new TypeToken<ArrayList<String>>(){}.getType());		
+		return returnList;
+	}
+	
+	// sends a SCAN request to the server and puts the result in the scanMap array
+	protected ScanMap doScan() throws IOException {
+		Gson gson = new GsonBuilder()
+    			.setPrettyPrinting()
+    			.enableComplexMapKeySerialization()
+    			.create();
+		sendTo_RCP.println("SCAN");
+
+		String jsonScanMapIn = receiveFrom_RCP.readLine(); //grabs the string that was returned first
+		if(jsonScanMapIn == null){
+			System.out.println("ROVER_00 check connection to server");
+			jsonScanMapIn = "";
+		}
+		StringBuilder jsonScanMap = new StringBuilder();
+		System.out.println("ROVER_00 incomming SCAN result - first readline: " + jsonScanMapIn);
+		
+		if(jsonScanMapIn.startsWith("SCAN")){	
+			while (!(jsonScanMapIn = receiveFrom_RCP.readLine()).equals("SCAN_END")) {
+				jsonScanMap.append(jsonScanMapIn);
+				jsonScanMap.append("\n");
+			}
+		} else {
+			// in case the server call gives unexpected results
+			clearReadLineBuffer();
+			return null; // server response did not start with "SCAN"
+		}
+
+		String jsonScanMapString = jsonScanMap.toString();
+		// convert from the json string back to a ScanMap object
+		return gson.fromJson(jsonScanMapString, ScanMap.class);
+	}
+	
+
+	// this takes the server response string, parses out the x and x values and
+	// returns a Coord object	
+	protected static Coord extractLocationFromString(String sStr) {
+		int indexOf;
+		indexOf = sStr.indexOf(" ");
+		sStr = sStr.substring(indexOf +1);
+		if (sStr.lastIndexOf(" ") != -1) {
+			String xStr = sStr.substring(0, sStr.lastIndexOf(" "));
+			String yStr = sStr.substring(sStr.lastIndexOf(" ") + 1);
+			return new Coord(Integer.parseInt(xStr), Integer.parseInt(yStr));
+		}
+		return null;
+	}
 }

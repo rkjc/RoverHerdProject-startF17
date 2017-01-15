@@ -19,16 +19,16 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
+import UI_support.GraphicTile;
+import UI_support.LineSegment;
 import common.Coord;
-import common.GraphicTile;
-import common.LineSegment;
 import common.PlanetMap;
 import common.RoverLocations;
 import common.ScienceLocations;
 import enums.Science;
 import enums.Terrain;
 
-public class GUIdisplay3 extends JPanel implements MyGUIAppendable3 {
+public class GUIdisplay extends JPanel implements MyGUIAppendable {
 	public static final int TILE_SIZE = 20;
 	public final int FONT_SIZE = 18;
 
@@ -48,10 +48,10 @@ public class GUIdisplay3 extends JPanel implements MyGUIAppendable3 {
 
 	private Color EXTRA_LIGHT_GREY = new Color(220, 220, 220);
 
-	public GUIdisplay3() {
+	public GUIdisplay() {
 	}
 
-	public GUIdisplay3(int width, int height, long timeLimit) {
+	public GUIdisplay(int width, int height, long timeLimit) {
 		this.width = width;
 		this.height = height;
 		this.pixelWidth = (this.width * TILE_SIZE);
@@ -220,7 +220,7 @@ public class GUIdisplay3 extends JPanel implements MyGUIAppendable3 {
 
 	}
 
-	static void createAndShowGui(MyGUIWorker3 myWorker, GUIdisplay3 mainPanel) {
+	static void createAndShowGui(MyGUIWorker myWorker, GUIdisplay mainPanel) {
 		// add a Prop Change listener here to listen for
 		// DONE state then call get() on myWorker
 		myWorker.execute();
@@ -240,13 +240,13 @@ public class GUIdisplay3 extends JPanel implements MyGUIAppendable3 {
 
 // #############################################################################################
 
-class MyGUIWorker3 extends SwingWorker<Void, String> {
-	private MyGUIAppendable3 myAppendable;
+class MyGUIWorker extends SwingWorker<Void, String> {
+	private MyGUIAppendable myAppendable;
 	private String msg;
 	private RoverLocations roverLoc;
 	private ScienceLocations sciloc;
 
-	public MyGUIWorker3(MyGUIAppendable3 myAppendable) {
+	public MyGUIWorker(MyGUIAppendable myAppendable) {
 		this.myAppendable = myAppendable;
 	}
 
@@ -302,7 +302,7 @@ class MyGUIWorker3 extends SwingWorker<Void, String> {
 
 		// Load array with target and start location outline lineSegments
 		ArrayList<LineSegment> lineSegmentArrayList = new ArrayList<LineSegment>();
-		int tileSize = GUIdisplay3.TILE_SIZE;
+		int tileSize = GUIdisplay.TILE_SIZE;
 		int boxSize;
 		int minSafePos_x;
 		int maxSafePos_x;
@@ -380,7 +380,7 @@ class MyGUIWorker3 extends SwingWorker<Void, String> {
 	}
 }
 
-interface MyGUIAppendable3 {
+interface MyGUIAppendable {
 	public void drawThisGraphicTileArray(ArrayList<GraphicTile> graphicTileArraylist,
 			ArrayList<LineSegment> lineSegmentArrayList);
 

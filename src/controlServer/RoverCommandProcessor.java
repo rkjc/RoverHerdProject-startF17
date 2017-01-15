@@ -24,12 +24,11 @@ import com.google.gson.GsonBuilder;
 import common.Coord;
 import common.MapTile;
 import common.PlanetMap;
-import common.Rover;
 import common.RoverLocations;
 import common.ScanMap;
 import common.ScienceLocations;
 import enums.RoverDriveType;
-import enums.RoverName;
+import enums.RoverConfiguration;
 import enums.RoverToolType;
 import enums.Science;
 import enums.Terrain;
@@ -42,12 +41,12 @@ import supportTools.SwarmMapInit;
  * Many thanks to the authors for publishing their code examples
  */
 
-public class SwarmServer {
+public class RoverCommandProcessor {
 
     /**
      * The port that the server listens on.
      */
-    private static final int PORT = 9537; // because ... csula class number
+    private static final int PORT = 9537; // because ... CSULA class number CS-5337
     
     private static SwarmMapInit mapInit = new SwarmMapInit();
     private static String mapFileName = "MapDefault.txt";
@@ -58,16 +57,20 @@ public class SwarmServer {
     private static PlanetMap planetMap = null; // = new PlanetMap(mapWidth, mapHeight); 
     private static RoverLocations roverLocations = new RoverLocations();
     private static ScienceLocations scienceLocations = new ScienceLocations();
+    // need to keep a separate array of collected science for each corporation or team
     private static ArrayList<Science> collectedScience_0 = new ArrayList<Science>();
     private static ArrayList<Science> collectedScience_1 = new ArrayList<Science>();
     private static ArrayList<Science> collectedScience_2 = new ArrayList<Science>();
     private static ArrayList<ArrayList<Science>> corpCollectedScience = new ArrayList<ArrayList<Science>>();
+    private static ArrayList<String> connectedRovers = new ArrayList<String>();
+    private static HashMap<String, RoverStats> listOfRovers = new HashMap<String, RoverStats>();
+    
     
     private static long countdownTimer;
     private static boolean roversAreGO;
 	
-	static GUIdisplay3 mainPanel3;
-	static MyGUIWorker3 myWorker3;
+	static GUIdisplay mainPanel;
+	static MyGUIWorker myWorker;
     
 	// Length of time allowed for the rovers to get back to the retrieval zone
 	static final int MAXIMUM_ACTIVITY_TIME_LIMIT = 300000; // 10 Minutes = 600,000, 5 Minutes = 300,000
@@ -109,6 +112,7 @@ public class SwarmServer {
         System.out.println("The Swarm server is running.");
         ServerSocket listener = new ServerSocket(PORT);
         
+        //this is for general accounting on harvesting
         corpCollectedScience.add(collectedScience_0);
         corpCollectedScience.add(collectedScience_1);
         corpCollectedScience.add(collectedScience_2);
@@ -123,16 +127,14 @@ public class SwarmServer {
         
         countdownTimer = System.currentTimeMillis();
 		
-		mainPanel3 = new GUIdisplay3(mapWidth, mapHeight, MAXIMUM_ACTIVITY_TIME_LIMIT);
-		myWorker3 = new MyGUIWorker3(mainPanel3);
+		mainPanel = new GUIdisplay(mapWidth, mapHeight, MAXIMUM_ACTIVITY_TIME_LIMIT);
+		myWorker = new MyGUIWorker(mainPanel);
 		
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				// currently sending it when calling the updateGUIDisplay() method
-//**			GUIdisplay.createAndShowGui(myWorker, mainPanel);
-				//GUIdisplay2.createAndShowGui(myWorker2, mainPanel2);
-				GUIdisplay3.createAndShowGui(myWorker3, mainPanel3);
+				GUIdisplay.createAndShowGui(myWorker, mainPanel);
 				try {
 					updateGUIDisplay();
 				} catch (Exception e) {				
@@ -142,6 +144,7 @@ public class SwarmServer {
 		});
 		       
         try {
+        	//listening loop
             while (true) {
                 new Handler(listener.accept()).start();
             }
@@ -152,7 +155,7 @@ public class SwarmServer {
 
     /**
      * A handler thread class.  Handlers are spawned from the listening
-     * loop and are responsible for a dealing with a single client
+     * loop and are responsible for dealing with a single client
      * and processing its messages.
      */
     private static class Handler extends Thread {
@@ -178,7 +181,7 @@ public class SwarmServer {
 
         /**
          * Services this thread's client by repeatedly requesting a Rover nameType
-         * Then runs the Rover environment simulator server process        
+         * Then runs the Rover Command Process simulator server        
          */
         public void run() {
             try {
@@ -195,23 +198,27 @@ public class SwarmServer {
                     System.out.println(roverNameString + " has connected to server");
                     if (roverNameString == null) {
                         return;
+                    } else if (connectedRovers.contains(roverNameString)){
+                    	System.out.println(roverNameString + " is already connected to server");
+                    	return;
                     } else {
                     	break;
                     }
                 }
+                connectedRovers.add(roverNameString);
                 
-                // TODO check to see if this rover thread already exists.
-                // if exists and is active - refuse connection
-                // if exists and socket is not active - reconnect to that socket
-                // enforce time limit between reconnection to minimize spamming
+                // make and instantiate a Rover object connected to this thread if one does not exist
+                RoverStats rover;
+                if(listOfRovers.containsKey(roverNameString)){
+                	rover = listOfRovers.get(roverNameString);
+                } else {                	
+                	RoverConfiguration rConfig = RoverConfiguration.getEnum(roverNameString); 
+  	                rover = new RoverStats(rConfig);
+  	                listOfRovers.put(roverNameString, rover);
+                }
                 
-                // make and instantiate a Rover object connected to this thread
-                RoverName rname = RoverName.getEnum(roverNameString); 
-                Rover rover = new Rover(rname);
-                
-                
-                
-                // ##### Run the Rover server process #####
+
+                // ##### Run the Rover Control Processor server #####
                 while (roversAreGO) {	
                 	//read command input from the Rover
                     String input = inFromRover.readLine();
@@ -423,11 +430,13 @@ public class SwarmServer {
                              
                 }
             } catch (IOException e) {
+            	connectedRovers.remove(roverNameString);
                 System.out.println(e);
             } catch (Exception e) {
 				e.printStackTrace();
 			} finally {
                 try {
+                	connectedRovers.remove(roverNameString);
                     socket.close();
                 } catch (IOException e) {  }
             }
@@ -439,7 +448,7 @@ public class SwarmServer {
         
 
         // *** SCAN ***
-		private String retriveScanMap(Rover thisRover) {
+		private String retriveScanMap(RoverStats thisRover) {
 			//System.out.println("SWARM: ------ SCAN ------"); //debug test input parsing
 			Gson gson = new GsonBuilder()
         			.setPrettyPrinting()
@@ -506,7 +515,7 @@ public class SwarmServer {
 
    
     // ** MOVE **
-    static Coord doMove(Rover thisRover, String requestedMoveDir) throws Exception{ 
+    static Coord doMove(RoverStats thisRover, String requestedMoveDir) throws Exception{ 
     	// *** pay close attention to this "synchronized" and make sure it works as intended ***
     	// MOVE has to lock the roverLocations list because it needs to change it's contents
     	synchronized (roverLocations){
@@ -788,11 +797,11 @@ public class SwarmServer {
 	}
     
 	static void updateGUIDisplay() throws Exception{
-		myWorker3.displayFullMap(roverLocations.clone(), scienceLocations, planetMap);
+		myWorker.displayFullMap(roverLocations.clone(), scienceLocations, planetMap);
 	}
 	
 	static void scoreDisplayUpdate() throws Exception{
-		myWorker3.displayScore(corpCollectedScience);
+		myWorker.displayScore(corpCollectedScience);
 	}
 	
 	static void stopRoverAreGO(){
@@ -801,7 +810,7 @@ public class SwarmServer {
 	}
 	
 	// sad face - more hard coded bs
-	private static int getCorpNumber(Rover aRover){
+	private static int getCorpNumber(RoverStats aRover){
 		int tnum = 0;
 		String roverNumber = aRover.getRoverName().toString().substring(6);
 		// check for Blue Corp - return int 1
@@ -822,7 +831,7 @@ public class SwarmServer {
 
 class TimeLimitStop implements ActionListener {	
 	public void actionPerformed(ActionEvent event) {
-		SwarmServer.stopRoverAreGO();
+		RoverCommandProcessor.stopRoverAreGO();
 		System.out.println("Time is up - Return mission is launching");
 		Toolkit.getDefaultToolkit().beep();
 	}
