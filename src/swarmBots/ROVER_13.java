@@ -49,7 +49,7 @@ import rover_logic.State;
 //TODO: Update global map
 
 
-public class ROVER_03 {
+public class ROVER_13 {
 
 	BufferedReader in;
 	PrintWriter out;
@@ -80,7 +80,7 @@ public class ROVER_03 {
 
 	Coord currentLoc;
 
-	public ROVER_03() {
+	public ROVER_13() {
 		System.out.println("ROVER_03 rover object constructed");
 		rovername = "ROVER_03";
 		SERVER_ADDRESS = "localhost";
@@ -89,7 +89,7 @@ public class ROVER_03 {
 		sleepTime = 300;
 	}
 
-	public ROVER_03(String serverAddress) {
+	public ROVER_13(String serverAddress) {
 		// constructor
 		System.out.println("ROVER_03 rover object constructed");
 		rovername = "ROVER_03";
@@ -873,14 +873,14 @@ public class ROVER_03 {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		ROVER_03 client;
+		ROVER_13 client;
 		// if a command line argument is included it is used as the map filename
 		// if present uses an IP address instead of localhost
 
 		if (!(args.length == 0)) {
-			client = new ROVER_03(args[0]);
+			client = new ROVER_13(args[0]);
 		} else {
-			client = new ROVER_03();
+			client = new ROVER_13();
 		}
 
 		client.run();
