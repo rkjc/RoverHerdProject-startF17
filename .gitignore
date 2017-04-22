@@ -16,6 +16,9 @@
 !Maps/
 !Maps/**
 
+!docs/
+!docs/**
+
 !*.txt
 
 # MAC HIDDEN FILES
