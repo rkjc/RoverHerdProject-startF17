@@ -1,4 +1,4 @@
-package common;
+package MapSupport;
 
 public class PlanetMap {
 	private MapTile[][] planetMap;

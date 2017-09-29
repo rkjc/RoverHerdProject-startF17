@@ -1,4 +1,4 @@
-package common;
+package MapSupport;
 
 import java.util.HashMap;
 import java.util.Map.Entry;

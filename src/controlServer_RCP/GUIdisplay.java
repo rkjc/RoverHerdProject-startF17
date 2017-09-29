@@ -1,4 +1,4 @@
-package controlServer;
+package controlServer_RCP;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -19,12 +19,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
+import MapSupport.Coord;
+import MapSupport.PlanetMap;
+import MapSupport.RoverLocations;
+import MapSupport.ScienceLocations;
 import UI_support.GraphicTile;
 import UI_support.LineSegment;
-import common.Coord;
-import common.PlanetMap;
-import common.RoverLocations;
-import common.ScienceLocations;
 import enums.Science;
 import enums.Terrain;
 

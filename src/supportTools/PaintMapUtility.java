@@ -10,11 +10,11 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
-import common.Coord;
-import common.MapTile;
-import common.PlanetMap;
-import common.RoverLocations;
-import common.ScienceLocations;
+import MapSupport.Coord;
+import MapSupport.MapTile;
+import MapSupport.PlanetMap;
+import MapSupport.RoverLocations;
+import MapSupport.ScienceLocations;
 import enums.RoverConfiguration;
 import enums.Science;
 import enums.Terrain;

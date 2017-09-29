@@ -13,6 +13,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import MapSupport.Coord;
+import MapSupport.MapTile;
+import MapSupport.ScanMap;
+import communicationInterface.Communication;
+import communicationInterface.RoverDetail;
+import communicationInterface.ScienceDetail;
 import enums.RoverConfiguration;
 import enums.RoverDriveType;
 import enums.RoverMode;

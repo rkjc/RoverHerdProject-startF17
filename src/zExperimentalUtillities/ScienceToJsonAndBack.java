@@ -7,10 +7,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import common.Coord;
-import common.PlanetMap;
-import common.RoverLocations;
-import common.ScienceLocations;
+import MapSupport.Coord;
+import MapSupport.PlanetMap;
+import MapSupport.RoverLocations;
+import MapSupport.ScienceLocations;
 import enums.Science;
 
 public class ScienceToJsonAndBack {

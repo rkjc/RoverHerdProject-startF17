@@ -8,11 +8,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.Communication;
-import common.Coord;
-import common.MapTile;
+import MapSupport.Coord;
+import MapSupport.MapTile;
 import common.Rover;
-import common.ScienceDetail;
+import communicationInterface.Communication;
+import communicationInterface.ScienceDetail;
 import enums.RoverConfiguration;
 import enums.RoverDriveType;
 import enums.RoverMode;

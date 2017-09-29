@@ -1,7 +1,7 @@
 package rover_logic;
 
-import common.Coord;
-import common.MapTile;
+import MapSupport.Coord;
+import MapSupport.MapTile;
 
 //this class also taken from //* https://github.com/daniel-beard/DStarLiteJava/
 //but slightly modified to fit rover game

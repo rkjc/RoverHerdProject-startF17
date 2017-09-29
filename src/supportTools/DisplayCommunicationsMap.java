@@ -8,11 +8,11 @@ import java.util.concurrent.TimeUnit;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import common.Communication;
-import common.CommunicationHelper;
-import common.Coord;
-import common.MapTile;
-import common.ScanMap;
+import MapSupport.Coord;
+import MapSupport.MapTile;
+import MapSupport.ScanMap;
+import communicationInterface.Communication;
+import communicationInterface.CommunicationHelper;
 import enums.Science;
 import enums.Terrain;
 

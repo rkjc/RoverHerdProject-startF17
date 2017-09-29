@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import common.Communication;
-import common.Coord;
-import common.MapTile;
-import common.PlanetMap;
-import common.ScanMap;
+import MapSupport.Coord;
+import MapSupport.MapTile;
+import MapSupport.PlanetMap;
+import MapSupport.ScanMap;
+import communicationInterface.Communication;
 
 
 

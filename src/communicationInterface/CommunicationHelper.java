@@ -1,7 +1,8 @@
-package common;
+package communicationInterface;
 
 import org.json.simple.JSONObject;
 
+import MapSupport.MapTile;
 import enums.Science;
 import enums.Terrain;
 

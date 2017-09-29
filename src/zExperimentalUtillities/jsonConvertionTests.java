@@ -7,9 +7,9 @@ import org.json.simple.parser.ParseException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import common.Coord;
-import common.MapTile;
-import common.ScanMap;
+import MapSupport.Coord;
+import MapSupport.MapTile;
+import MapSupport.ScanMap;
 import enums.Science;
 import enums.Terrain;
 import json.MyWriter;

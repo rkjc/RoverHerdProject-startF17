@@ -13,10 +13,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import common.Coord;
-import common.MapTile;
+import MapSupport.Coord;
+import MapSupport.MapTile;
+import MapSupport.ScanMap;
 import common.Rover;
-import common.ScanMap;
 import enums.Terrain;
 
 /**

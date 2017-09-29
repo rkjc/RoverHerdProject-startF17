@@ -1,4 +1,4 @@
-package common;
+package communicationInterface;
 
 import enums.Science;
 import enums.Terrain;

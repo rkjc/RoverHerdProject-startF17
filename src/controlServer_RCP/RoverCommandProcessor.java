@@ -1,4 +1,4 @@
-package controlServer;
+package controlServer_RCP;
 
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -21,18 +21,17 @@ import javax.swing.Timer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import common.Coord;
-import common.MapTile;
-import common.PlanetMap;
-import common.RoverLocations;
-import common.ScanMap;
-import common.ScienceLocations;
+import MapSupport.Coord;
+import MapSupport.MapTile;
+import MapSupport.PlanetMap;
+import MapSupport.RoverLocations;
+import MapSupport.ScanMap;
+import MapSupport.ScienceLocations;
 import enums.RoverDriveType;
 import enums.RoverConfiguration;
 import enums.RoverToolType;
 import enums.Science;
 import enums.Terrain;
-import supportTools.SwarmMapInit;
 
 
 /**

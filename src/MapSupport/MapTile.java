@@ -1,4 +1,4 @@
-package common;
+package MapSupport;
 
 import enums.RoverConfiguration;
 import enums.Science;

@@ -1,10 +1,12 @@
-package common;
+package communicationInterface;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import MapSupport.Coord;
+import MapSupport.MapTile;
 import enums.RoverDriveType;
 import enums.RoverMode;
 import enums.RoverToolType;

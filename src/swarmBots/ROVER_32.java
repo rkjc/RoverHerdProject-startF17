@@ -24,11 +24,11 @@ import com.google.gson.GsonBuilder;
 //import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
-import common.Communication;
-import common.CommunicationHelper;
-import common.Coord;
-import common.MapTile;
-import common.ScanMap;
+import MapSupport.Coord;
+import MapSupport.MapTile;
+import MapSupport.ScanMap;
+import communicationInterface.Communication;
+import communicationInterface.CommunicationHelper;
 import enums.RoverDriveType;
 import enums.Terrain;
 import enums.RoverToolType;

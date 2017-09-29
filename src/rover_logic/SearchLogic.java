@@ -1,8 +1,5 @@
 package rover_logic;
 
-import common.Coord;
-import common.MapTile;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +9,8 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import MapSupport.Coord;
+import MapSupport.MapTile;
 import enums.RoverDriveType;
 import enums.Terrain;
 

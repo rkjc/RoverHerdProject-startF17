@@ -7,15 +7,15 @@ import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
-import common.Coord;
-import common.MapTile;
-import common.PlanetMap;
-import common.RoverLocations;
-import common.ScienceLocations;
+import MapSupport.Coord;
+import MapSupport.MapTile;
+import MapSupport.PlanetMap;
+import MapSupport.RoverLocations;
+import MapSupport.ScienceLocations;
+import controlServer_RCP.SwarmMapInit;
 import enums.RoverConfiguration;
 import enums.Science;
 import enums.Terrain;
-import supportTools.SwarmMapInit;
 
 public class ParseInputMap {
 	

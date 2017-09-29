@@ -1,4 +1,4 @@
-package common;
+package MapSupport;
 
 public class ScanMap {
 	private MapTile[][] scanArray;

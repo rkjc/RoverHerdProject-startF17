@@ -2,8 +2,9 @@ package rover_logic;
 
 import java.io.Serializable;
 import java.util.*;
-import common.Coord;
-import common.MapTile;
+
+import MapSupport.Coord;
+import MapSupport.MapTile;
 import enums.RoverDriveType;
 import enums.Terrain;
 

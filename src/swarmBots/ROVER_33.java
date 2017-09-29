@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
-import common.Coord;
-import common.MapTile;
+import MapSupport.Coord;
+import MapSupport.MapTile;
 import common.Rover;
-import common.ScienceDetail;
+import communicationInterface.ScienceDetail;
 import enums.RoverConfiguration;
 import enums.RoverDriveType;
 import enums.RoverMode;

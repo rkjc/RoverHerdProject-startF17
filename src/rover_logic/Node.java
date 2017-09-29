@@ -1,6 +1,6 @@
 package rover_logic;
 
-import common.Coord;
+import MapSupport.Coord;
 
 /**
  * Created by samskim on 5/12/16.

@@ -1,4 +1,4 @@
-package common;
+package communicationInterface;
 
 import enums.RoverDriveType;
 import enums.RoverMode;
