@@ -34,6 +34,8 @@ import rover_logic.SearchLogic;
  * Created by samskim on 4/21/16.
  * Modified by Richard Cross 2017-09-28
  * 
+ * This rover was originally named ROVER_11 by group 11 - Spring 2016
+ * 
  * This rover was originally written to incorporate the original version of the
  * inter-robot communication code.
  * 

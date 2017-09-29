@@ -45,7 +45,8 @@ import rover_logic.State;
  */
 
 /*
-*Original name ROVER_01 written by group 3, cs5337 Fall 2016
+*Original name ROVER_03 written by group 3, cs5337 Fall 2016
+*
 *Modified 2017-09-28 by Richard Cross - renamed ROVER_32
 *This rover is one example of how to incorporate the Astar.java
 *and DStarLite.java classes for path finding.

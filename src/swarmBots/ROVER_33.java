@@ -29,18 +29,26 @@ import rover_logic.Astar;
  * publishing their code examples
  */
 
-public class ROVER_03 extends Rover {
+/**
+ * 
+ * @author rkjc
+ * 
+ * This was originally ROVER_03 from Spring-2017 from group 3
+ *
+ */
 
-	public ROVER_03() {
+public class ROVER_33 extends Rover {
+
+	public ROVER_33() {
 		// constructor
-		System.out.println("ROVER_03 rover object constructed");
-		rovername = "ROVER_03";
+		System.out.println("ROVER_33 rover object constructed");
+		rovername = "ROVER_33";
 	}
 
-	public ROVER_03(String serverAddress) {
+	public ROVER_33(String serverAddress) {
 		// constructor
-		System.out.println("ROVER_03 rover object constructed");
-		rovername = "ROVER_03";
+		System.out.println("ROVER_33 rover object constructed");
+		rovername = "ROVER_33";
 		SERVER_ADDRESS = serverAddress;
 	}
 
@@ -259,7 +267,7 @@ public class ROVER_03 extends Rover {
 				// cycles through the control loop
 				Thread.sleep(sleepTime);
 
-				System.out.println("ROVER_03 ------------ bottom process control --------------");
+				System.out.println("ROVER_33 ------------ bottom process control --------------");
 			} // END of Rover control While(true) loop
 
 			// This catch block closes the open socket connection to the server
@@ -271,7 +279,7 @@ public class ROVER_03 extends Rover {
 				try {
 					socket.close();
 				} catch (IOException e) {
-					System.out.println("ROVER_03 problem closing socket");
+					System.out.println("ROVER_33 problem closing socket");
 				}
 			}
 		}
@@ -425,14 +433,14 @@ public class ROVER_03 extends Rover {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		ROVER_03 client;
+		ROVER_33 client;
 		// if a command line argument is present it is used
 		// as the IP address for connection to SwarmServer instead of localhost
 
 		if (!(args.length == 0)) {
-			client = new ROVER_03(args[0]);
+			client = new ROVER_33(args[0]);
 		} else {
-			client = new ROVER_03();
+			client = new ROVER_33();
 		}
 
 		client.run();

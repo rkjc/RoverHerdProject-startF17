@@ -26,21 +26,29 @@ import rover_logic.Astar;
  * publishing their code examples
  */
 
-public class ROVER_02 extends Rover {
+/**
+ * 
+ * @author rkjc
+ *
+ * This rover was originally named ROVER_02 by group 2 - Spring 2017
+ * 
+ */
+
+public class ROVER_34 extends Rover {
 
 	// Scan Crystal
 	List<Coord> crystalCoordinates = new ArrayList<Coord>();
 
-	public ROVER_02() {
+	public ROVER_34() {
 		// constructor
-		System.out.println("ROVER_02 rover object constructed");
-		rovername = "ROVER_02";
+		System.out.println("ROVER_34 rover object constructed");
+		rovername = "ROVER_34";
 	}
 
-	public ROVER_02(String serverAddress) {
+	public ROVER_34(String serverAddress) {
 		// constructor
-		System.out.println("ROVER_02 rover object constructed");
-		rovername = "ROVER_02";
+		System.out.println("ROVER_34 rover object constructed");
+		rovername = "ROVER_34";
 		SERVER_ADDRESS = serverAddress;
 	}
 
@@ -441,14 +449,14 @@ public class ROVER_02 extends Rover {
 	 * Runs the client
 	 */
 	public static void main(String[] args) throws Exception {
-		ROVER_02 client;
+		ROVER_34 client;
 		// if a command line argument is present it is used
 		// as the IP address for connection to SwarmServer instead of localhost
 
 		if (!(args.length == 0)) {
-			client = new ROVER_02(args[0]);
+			client = new ROVER_34(args[0]);
 		} else {
-			client = new ROVER_02();
+			client = new ROVER_34();
 		}
 
 		client.run();
