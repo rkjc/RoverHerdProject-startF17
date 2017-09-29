@@ -33,7 +33,14 @@ import rover_logic.SearchLogic;
 /**
  * Created by samskim on 4/21/16.
  * Modified by Richard Cross 2017-09-28
+ * 
+ * This rover was originally written to incorporate the original version of the
+ * inter-robot communication code.
+ * 
+ * Along the way it's some of it's processes may have been broken 
+ * by changes in the code that were not tested for backwards compatibility.
  */
+
 public class ROVER_31 extends Rover {
 
     BufferedReader in;
@@ -219,10 +226,13 @@ public class ROVER_31 extends Rover {
 	            updateglobalMap(currentLoc, scanMapTiles);
 	
 	            //***** communicating with the server
+	            System.out.println("do com.postScanMapTiles(currentLoc, scanMapTiles)");
 	            System.out.println("post message: " + com.postScanMapTiles(currentLoc, scanMapTiles));
+	            System.out.println("done com.postScanMapTiles(currentLoc, scanMapTiles)");
 	            if (trafficCounter % 5 == 0) {
+	            	System.out.println("do com.getGlobalMap()");
 	                updateglobalMap(com.getGlobalMap());
-	
+	            	System.out.println("done com.getGlobalMap()");
 	                // ********* get closest destination from current location everytime
 	                if (!destinations.isEmpty()) {
 	                    destination = getClosestDestination(currentLoc);

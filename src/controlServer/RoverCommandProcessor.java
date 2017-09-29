@@ -73,7 +73,7 @@ public class RoverCommandProcessor {
 	static MyGUIWorker myWorker;
     
 	// Length of time allowed for the rovers to get back to the retrieval zone
-	static final int MAXIMUM_ACTIVITY_TIME_LIMIT = 300000; // 10 Minutes = 600,000, 5 Minutes = 300,000
+	static final int MAXIMUM_ACTIVITY_TIME_LIMIT = 600000; // 10 Minutes = 600,000, 5 Minutes = 300,000
 	static Timer countDownTimer;
 	static long startTime;
 	

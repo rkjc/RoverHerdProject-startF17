@@ -24,55 +24,41 @@ public class Rover {
 
 	// setup the RoverCommandProcessor links
 	protected BufferedReader receiveFrom_RCP;
-
 	protected PrintWriter sendTo_RCP;
 
 	public String rovername;
-
 	public ScanMap scanMap;
-
 	public int sleepTime;
-
-	public String SERVER_ADDRESS = "localhost";
-
+	public String SERVER_ADDRESS = "localhost"; //default value
 	public String timeRemaining;
-
 	public Coord currentLoc = null;
-
 	public Coord previousLoc = null;
-
 	public Coord startLocation = null;
-
 	public Coord targetLocation = null;
 
 	public ArrayList<String> equipment = new ArrayList<String>();
 
 	// Hardcoded port number for the CS-5337 class
 	protected static final int PORT_ADDRESS = 9537;
-
-	// TODO add code to the move methods to check for impassable terrain
+	
+	
 	protected void moveNorth() {
-
 		sendTo_RCP.println("MOVE N");
 	}
 
 	protected void moveSouth() {
-
 		sendTo_RCP.println("MOVE S");
 	}
 
 	protected void moveEast() {
-
 		sendTo_RCP.println("MOVE E");
 	}
 
 	protected void moveWest() {
-
 		sendTo_RCP.println("MOVE W");
 	}
 
 	protected Coord getStartLocation() throws IOException {
-
 		String line = null;
 		sendTo_RCP.println("START_LOC");
 		line = receiveFrom_RCP.readLine();
@@ -87,7 +73,6 @@ public class Rover {
 	}
 
 	protected Coord getTargetLocation() throws IOException {
-
 		String line = null;
 		sendTo_RCP.println("TARGET_LOC");
 		line = receiveFrom_RCP.readLine();
@@ -102,7 +87,6 @@ public class Rover {
 	}
 
 	protected Coord getCurrentLocation() throws IOException {
-
 		String line = null;
 		sendTo_RCP.println("LOC");
 		line = receiveFrom_RCP.readLine();
@@ -116,15 +100,14 @@ public class Rover {
 		return null;
 	}
 
+	// this allows the print stream being sent from the RCP to be completely cleared, just in case.
 	protected void clearReadLineBuffer() throws IOException {
-
 		while (receiveFrom_RCP.ready()) {
 			receiveFrom_RCP.readLine();
 		}
 	}
 
 	protected String getTimeRemaining() throws IOException {
-
 		String line;
 		String timeRemaining = null;
 		sendTo_RCP.println("TIMER");
@@ -140,16 +123,13 @@ public class Rover {
 		return timeRemaining;
 	}
 
-	// method to retrieve a list of the rover's EQUIPMENT from the server
+	// method to retrieve a list of this particular rover's EQUIPMENT from the server
 	protected ArrayList<String> getEquipment() throws IOException {
-
 		Gson gson = new GsonBuilder().setPrettyPrinting()
 				.enableComplexMapKeySerialization().create();
 		sendTo_RCP.println("EQUIPMENT");
 
-		String jsonEqListIn = receiveFrom_RCP.readLine(); // grabs the string
-															// that was returned
-															// first
+		String jsonEqListIn = receiveFrom_RCP.readLine();
 		if (jsonEqListIn == null) {
 			jsonEqListIn = "";
 		}
@@ -167,6 +147,7 @@ public class Rover {
 		} else {
 			// in case the server call gives unexpected results
 			clearReadLineBuffer();
+			System.out.println("server response did not start with \"EQUIPMENT\" ");
 			return null; // server response did not start with "EQUIPMENT"
 		}
 
@@ -181,14 +162,12 @@ public class Rover {
 	// sends a SCAN request to the server and puts the result in the scanMap
 	// array
 	protected ScanMap doScan() throws IOException {
-
 		Gson gson = new GsonBuilder().setPrettyPrinting()
 				.enableComplexMapKeySerialization().create();
 		sendTo_RCP.println("SCAN");
 
-		String jsonScanMapIn = receiveFrom_RCP.readLine(); // grabs the string
-															// that was returned
-															// first
+		String jsonScanMapIn = receiveFrom_RCP.readLine(); 
+		
 		if (jsonScanMapIn == null) {
 			System.out.println("ROVER_00 check connection to server");
 			jsonScanMapIn = "";
@@ -206,6 +185,7 @@ public class Rover {
 		} else {
 			// in case the server call gives unexpected results
 			clearReadLineBuffer();
+			System.out.println("server response did not start with \"SCAN\" ");
 			return null; // server response did not start with "SCAN"
 		}
 
@@ -217,7 +197,6 @@ public class Rover {
 	// this takes the server response string, parses out the x and x values and
 	// returns a Coord object
 	protected static Coord extractLocationFromString(String sStr) {
-
 		int indexOf;
 		indexOf = sStr.indexOf(" ");
 		sStr = sStr.substring(indexOf + 1);
@@ -229,6 +208,13 @@ public class Rover {
 		return null;
 	}
 
+	
+	
+	
+	// ********* this additional code needs to be cleaned up **************
+	// should not be using hard coded communication server address "http://localhost:3000/api", rovername, "open_secret");
+	// needs commenting to describe just what the heck are these functions doing?
+	
 	// Added by ROVER03 team
 	protected ScienceDetail analyzeAndGetSuitableScience() {
 

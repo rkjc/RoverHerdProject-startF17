@@ -46,14 +46,18 @@ import rover_logic.State;
 
 /*
 *Original name ROVER_01 written by group 3, cs5337 Fall 2016
-*Modified 2017-09-28 by Richard Cross - renamed ROVER_33
+*Modified 2017-09-28 by Richard Cross - renamed ROVER_32
+*This rover is one example of how to incorporate the Astar.java
+*and DStarLite.java classes for path finding.
+*Along the way it's some of it's communication processes may have been broken 
+*by changes in the code that were not tested for backwards compatibility.
 */
 
 //TODO: Update destinations - Coords that we can reach to extract science
 //TODO: Update global map
 
 
-public class ROVER_33 {
+public class ROVER_32 {
 
 	BufferedReader in;
 	PrintWriter out;
@@ -84,19 +88,19 @@ public class ROVER_33 {
 
 	Coord currentLoc;
 
-	public ROVER_33() {
-		System.out.println("ROVER_33 rover object constructed");
-		rovername = "ROVER_33";
+	public ROVER_32() {
+		System.out.println("ROVER_32 rover object constructed");
+		rovername = "ROVER_32";
 		SERVER_ADDRESS = "localhost";
 		// in milliseconds - smaller is faster, but the server will cut
 		// connection if too small
 		sleepTime = 300;
 	}
 
-	public ROVER_33(String serverAddress) {
+	public ROVER_32(String serverAddress) {
 		// constructor
-		System.out.println("ROVER_33 rover object constructed");
-		rovername = "ROVER_33";
+		System.out.println("ROVER_32 rover object constructed");
+		rovername = "ROVER_32";
 		SERVER_ADDRESS = serverAddress;
 		sleepTime = 300; // in milliseconds - smaller is faster, but the server
 							// will cut connection if it is too small
@@ -184,7 +188,7 @@ public class ROVER_33 {
 				try {
 					socket.close();
 				} catch (IOException e) {
-					System.out.println("ROVER_33 problem closing socket");
+					System.out.println("ROVER_32 problem closing socket");
 				}
 			}
 		}
@@ -215,7 +219,7 @@ public class ROVER_33 {
 			out.println("LOC");
 			line = in.readLine();
 			if (line == null) {
-				System.out.println("ROVER_33 check connection to server");
+				System.out.println("ROVER_32 check connection to server");
 				line = "";
 			}
 			if (line.startsWith("LOC")) {
@@ -273,7 +277,7 @@ public class ROVER_33 {
 			
 			steps++;
 			Thread.sleep(sleepTime);
-			System.out.println("ROVER_33 ------------ bottom process control --------------");
+			System.out.println("ROVER_32 ------------ bottom process control --------------");
 		}
 
 	}
@@ -599,7 +603,7 @@ public class ROVER_33 {
 			out.println("LOC");
 			line = in.readLine();
 			if (line == null) {
-				System.out.println("ROVER_33 check connection to server");
+				System.out.println("ROVER_32 check connection to server");
 				line = "";
 			}
 			if (line.startsWith("LOC")) {
@@ -616,12 +620,12 @@ public class ROVER_33 {
 			if (stuckCount >= 10)
 				out.println("MOVE " + move);
 
-			System.out.println("ROVER_33 blocked test " + blocked);
+			System.out.println("ROVER_32 blocked test " + blocked);
 			// this is the Rovers HeartBeat, it regulates how fast the Rover
 			// cycles through the control loop
 			Thread.sleep(sleepTime);
 
-			System.out.println("ROVER_33 ------------ bottom process control --------------");
+			System.out.println("ROVER_32 ------------ bottom process control --------------");
 		}
 	}
 
@@ -716,7 +720,7 @@ public class ROVER_33 {
 	// ####################### Support Methods #############################
 	private void clearReadLineBuffer() throws IOException {
 		while (in.ready()) {
-			// System.out.println("ROVER_33 clearing readLine()");
+			// System.out.println("ROVER_32 clearing readLine()");
 			in.readLine();
 		}
 	}
@@ -786,7 +790,7 @@ public class ROVER_33 {
 
 	// method to retrieve a list of the rover's EQUIPMENT from the server
 	private ArrayList<String> getEquipment() throws IOException {
-		// System.out.println("ROVER_33 method getEquipment()");
+		// System.out.println("ROVER_32 method getEquipment()");
 		Gson gson = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
 		out.println("EQUIPMENT");
 
@@ -796,14 +800,14 @@ public class ROVER_33 {
 			jsonEqListIn = "";
 		}
 		StringBuilder jsonEqList = new StringBuilder();
-		// System.out.println("ROVER_33 incomming EQUIPMENT result - first
+		// System.out.println("ROVER_32 incomming EQUIPMENT result - first
 		// readline: " + jsonEqListIn);
 
 		if (jsonEqListIn.startsWith("EQUIPMENT")) {
 			while (!(jsonEqListIn = in.readLine()).equals("EQUIPMENT_END")) {
 				jsonEqList.append(jsonEqListIn);
 				jsonEqList.append("\n");
-				// System.out.println("ROVER_33 doScan() bottom of while");
+				// System.out.println("ROVER_32 doScan() bottom of while");
 			}
 		} else {
 			// in case the server call gives unexpected results
@@ -815,7 +819,7 @@ public class ROVER_33 {
 		ArrayList<String> returnList;
 		returnList = gson.fromJson(jsonEqListString, new TypeToken<ArrayList<String>>() {
 		}.getType());
-		// System.out.println("ROVER_33 returnList " + returnList);
+		// System.out.println("ROVER_32 returnList " + returnList);
 
 		return returnList;
 	}
@@ -823,33 +827,33 @@ public class ROVER_33 {
 	// sends a SCAN request to the server and puts the result in the scanMap
 	// array
 	public void doScan() throws IOException {
-		// System.out.println("ROVER_33 method doScan()");
+		// System.out.println("ROVER_32 method doScan()");
 		Gson gson = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
 		out.println("SCAN");
 
 		String jsonScanMapIn = in.readLine(); // grabs the string that was
 												// returned first
 		if (jsonScanMapIn == null) {
-			System.out.println("ROVER_33 check connection to server");
+			System.out.println("ROVER_32 check connection to server");
 			jsonScanMapIn = "";
 		}
 		StringBuilder jsonScanMap = new StringBuilder();
-		System.out.println("ROVER_33 incomming SCAN result - first readline: " + jsonScanMapIn);
+		System.out.println("ROVER_32 incomming SCAN result - first readline: " + jsonScanMapIn);
 
 		if (jsonScanMapIn.startsWith("SCAN")) {
 			while (!(jsonScanMapIn = in.readLine()).equals("SCAN_END")) {
-				// System.out.println("ROVER_33 incomming SCAN result: " +
+				// System.out.println("ROVER_32 incomming SCAN result: " +
 				// jsonScanMapIn);
 				jsonScanMap.append(jsonScanMapIn);
 				jsonScanMap.append("\n");
-				// System.out.println("ROVER_33 doScan() bottom of while");
+				// System.out.println("ROVER_32 doScan() bottom of while");
 			}
 		} else {
 			// in case the server call gives unexpected results
 			clearReadLineBuffer();
 			return; // server response did not start with "SCAN"
 		}
-		// System.out.println("ROVER_33 finished scan while");
+		// System.out.println("ROVER_32 finished scan while");
 		String jsonScanMapString = jsonScanMap.toString();
 		// convert from the json string back to a ScanMap object
 		scanMap = gson.fromJson(jsonScanMapString, ScanMap.class);
@@ -877,14 +881,14 @@ public class ROVER_33 {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		ROVER_33 client;
+		ROVER_32 client;
 		// if a command line argument is included it is used as the map filename
 		// if present uses an IP address instead of localhost
 
 		if (!(args.length == 0)) {
-			client = new ROVER_33(args[0]);
+			client = new ROVER_32(args[0]);
 		} else {
-			client = new ROVER_33();
+			client = new ROVER_32();
 		}
 
 		client.run();
