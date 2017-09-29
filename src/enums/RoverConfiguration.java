@@ -37,6 +37,26 @@ public enum RoverConfiguration {
 	ROVER_18 ("WHEELS", "EXCAVATOR", "RADAR_SENSOR"),
 	ROVER_19 ("NONE", "NONE", "NONE"),
 	ROVER_20 ("NONE", "NONE", "NONE"),
+	
+	ROVER_31 ("WALKER", "DRILL", "EXCAVATOR"),
+	ROVER_32 ("WHEELS", "RANGE_BOOTER", "SPECTRAL_SENSOR"),
+	ROVER_33 ("WHEELS", "EXCAVATOR", "CHEMICAL_SENSOR"),
+	ROVER_34 ("WHEELS", "RANGE_BOOTER", "CHEMICAL_SENSOR"),
+	ROVER_35 ("TREADS", "DRILL", "EXCAVATOR"),
+	ROVER_36 ("WALKER", "DRILL", "RADIATION_SENSOR"),
+	ROVER_37 ("WHEELS", "RANGE_BOOTER", "RADAR_SENSOR"),
+	ROVER_38 ("WHEELS", "EXCAVATOR", "RADAR_SENSOR"),
+	ROVER_39 ("NONE", "NONE", "NONE"),
+	
+	ROVER_41 ("WALKER", "DRILL", "EXCAVATOR"),
+	ROVER_42 ("WHEELS", "RANGE_BOOTER", "SPECTRAL_SENSOR"),
+	ROVER_43 ("WHEELS", "EXCAVATOR", "CHEMICAL_SENSOR"),
+	ROVER_44 ("WHEELS", "RANGE_BOOTER", "CHEMICAL_SENSOR"),
+	ROVER_45 ("TREADS", "DRILL", "EXCAVATOR"),
+	ROVER_46 ("WALKER", "DRILL", "RADIATION_SENSOR"),
+	ROVER_47 ("WHEELS", "RANGE_BOOTER", "RADAR_SENSOR"),
+	ROVER_48 ("WHEELS", "EXCAVATOR", "RADAR_SENSOR"),
+	ROVER_49 ("NONE", "NONE", "NONE"),
 
 	// sample test rovers
 	ROVER_00 ("WHEELS", "RADIATION_SENSOR", "RADAR_SENSOR"),
@@ -127,6 +147,67 @@ public enum RoverConfiguration {
     	case "ROVER_20":
     		output = RoverConfiguration.ROVER_20;
     		break;
+    	
+    	//Past semester archive of star rovers
+    		
+    	case "ROVER_31":
+    		output = RoverConfiguration.ROVER_31;
+    		break;
+    	case "ROVER_32":
+    		output = RoverConfiguration.ROVER_32;
+    		break;
+    	case "ROVER_33":
+    		output = RoverConfiguration.ROVER_33;
+    		break;
+    	case "ROVER_34":
+    		output = RoverConfiguration.ROVER_34;
+    		break;
+    	case "ROVER_35":
+    		output = RoverConfiguration.ROVER_35;
+    		break;
+    	case "ROVER_36":
+    		output = RoverConfiguration.ROVER_36;
+    		break;
+    	case "ROVER_37":
+    		output = RoverConfiguration.ROVER_37;
+    		break;
+    	case "ROVER_38":
+    		output = RoverConfiguration.ROVER_38;
+    		break;
+    	case "ROVER_39":
+    		output = RoverConfiguration.ROVER_39;
+    		break;
+    		
+    		
+    		
+    	case "ROVER_41":
+    		output = RoverConfiguration.ROVER_41;
+    		break;
+    	case "ROVER_42":
+    		output = RoverConfiguration.ROVER_42;
+    		break;
+    	case "ROVER_43":
+    		output = RoverConfiguration.ROVER_43;
+    		break;
+    	case "ROVER_44":
+    		output = RoverConfiguration.ROVER_44;
+    		break;
+    	case "ROVER_45":
+    		output = RoverConfiguration.ROVER_45;
+    		break;
+    	case "ROVER_46":
+    		output = RoverConfiguration.ROVER_46;
+    		break;
+    	case "ROVER_47":
+    		output = RoverConfiguration.ROVER_47;
+    		break;
+    	case "ROVER_48":
+    		output = RoverConfiguration.ROVER_48;
+    		break;
+    	case "ROVER_49":
+    		output = RoverConfiguration.ROVER_49;
+    		break;
+    		
 
     	// Sample Rover Set
     	case "ROVER_90":

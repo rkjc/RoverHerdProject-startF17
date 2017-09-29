@@ -96,13 +96,13 @@ public class ROVER_00 extends Rover {
 			
 			
 			// **** Request START_LOC Location from SwarmServer **** this might be dropped as it should be (0, 0)
-			StartLocation = getStartLocation();
-			System.out.println(rovername + " START_LOC " + StartLocation);
+			startLocation = getStartLocation();
+			System.out.println(rovername + " START_LOC " + startLocation);
 			
 			
 			// **** Request TARGET_LOC Location from SwarmServer ****
-			TargetLocation = getTargetLocation();
-			System.out.println(rovername + " TARGET_LOC " + TargetLocation);
+			targetLocation = getTargetLocation();
+			System.out.println(rovername + " TARGET_LOC " + targetLocation);
 			
 			
 	

@@ -4,23 +4,31 @@
 # But not these files...
 !.gitignore
 
-!src
 !src/
 !src/**
 
-!libs
 !libs/
 !libs/**
 
-!Maps
 !Maps/
 !Maps/**
 
 !docs/
 !docs/**
 
+!images/
+!images/**
+
 !*.txt
 !*.md
 
-# MAC HIDDEN FILES
+
+# MAC and Windows Hidden System Files
 .DS_Store
+**/.DS_Store
+Thumbs.db
+**/Thumbs.db
+.Trashes
+**/.Trashes
+._.Trashes
+**/._.Trashes

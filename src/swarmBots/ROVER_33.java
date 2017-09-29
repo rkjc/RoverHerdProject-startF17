@@ -4,31 +4,30 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.StringWriter;
+//import java.io.StringWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+//import java.util.Collections;
+//import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
+//import java.util.PriorityQueue;
 import java.util.Random;
-import java.util.Stack;
+//import java.util.Stack;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
+//import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 import common.Communication;
 import common.CommunicationHelper;
 import common.Coord;
 import common.MapTile;
-import common.PlanetMap;
 import common.ScanMap;
 import enums.RoverDriveType;
 import enums.Terrain;
@@ -36,7 +35,7 @@ import enums.RoverToolType;
 import enums.Science;
 import rover_logic.Astar;
 import rover_logic.DStarLite;
-import rover_logic.SearchLogic;
+//import rover_logic.SearchLogic;
 import rover_logic.State;
 
 /**
@@ -45,11 +44,16 @@ import rover_logic.State;
  * publishing their code examples
  */
 
+/*
+*Original name ROVER_01 written by group 3, cs5337 Fall 2016
+*Modified 2017-09-28 by Richard Cross - renamed ROVER_33
+*/
+
 //TODO: Update destinations - Coords that we can reach to extract science
 //TODO: Update global map
 
 
-public class ROVER_13 {
+public class ROVER_33 {
 
 	BufferedReader in;
 	PrintWriter out;
@@ -80,19 +84,19 @@ public class ROVER_13 {
 
 	Coord currentLoc;
 
-	public ROVER_13() {
-		System.out.println("ROVER_03 rover object constructed");
-		rovername = "ROVER_03";
+	public ROVER_33() {
+		System.out.println("ROVER_33 rover object constructed");
+		rovername = "ROVER_33";
 		SERVER_ADDRESS = "localhost";
 		// in milliseconds - smaller is faster, but the server will cut
 		// connection if too small
 		sleepTime = 300;
 	}
 
-	public ROVER_13(String serverAddress) {
+	public ROVER_33(String serverAddress) {
 		// constructor
-		System.out.println("ROVER_03 rover object constructed");
-		rovername = "ROVER_03";
+		System.out.println("ROVER_33 rover object constructed");
+		rovername = "ROVER_33";
 		SERVER_ADDRESS = serverAddress;
 		sleepTime = 300; // in milliseconds - smaller is faster, but the server
 							// will cut connection if it is too small
@@ -180,7 +184,7 @@ public class ROVER_13 {
 				try {
 					socket.close();
 				} catch (IOException e) {
-					System.out.println("ROVER_03 problem closing socket");
+					System.out.println("ROVER_33 problem closing socket");
 				}
 			}
 		}
@@ -211,7 +215,7 @@ public class ROVER_13 {
 			out.println("LOC");
 			line = in.readLine();
 			if (line == null) {
-				System.out.println("ROVER_03 check connection to server");
+				System.out.println("ROVER_33 check connection to server");
 				line = "";
 			}
 			if (line.startsWith("LOC")) {
@@ -269,7 +273,7 @@ public class ROVER_13 {
 			
 			steps++;
 			Thread.sleep(sleepTime);
-			System.out.println("ROVER_03 ------------ bottom process control --------------");
+			System.out.println("ROVER_33 ------------ bottom process control --------------");
 		}
 
 	}
@@ -595,7 +599,7 @@ public class ROVER_13 {
 			out.println("LOC");
 			line = in.readLine();
 			if (line == null) {
-				System.out.println("ROVER_03 check connection to server");
+				System.out.println("ROVER_33 check connection to server");
 				line = "";
 			}
 			if (line.startsWith("LOC")) {
@@ -612,12 +616,12 @@ public class ROVER_13 {
 			if (stuckCount >= 10)
 				out.println("MOVE " + move);
 
-			System.out.println("ROVER_03 blocked test " + blocked);
+			System.out.println("ROVER_33 blocked test " + blocked);
 			// this is the Rovers HeartBeat, it regulates how fast the Rover
 			// cycles through the control loop
 			Thread.sleep(sleepTime);
 
-			System.out.println("ROVER_03 ------------ bottom process control --------------");
+			System.out.println("ROVER_33 ------------ bottom process control --------------");
 		}
 	}
 
@@ -712,7 +716,7 @@ public class ROVER_13 {
 	// ####################### Support Methods #############################
 	private void clearReadLineBuffer() throws IOException {
 		while (in.ready()) {
-			// System.out.println("ROVER_03 clearing readLine()");
+			// System.out.println("ROVER_33 clearing readLine()");
 			in.readLine();
 		}
 	}
@@ -782,7 +786,7 @@ public class ROVER_13 {
 
 	// method to retrieve a list of the rover's EQUIPMENT from the server
 	private ArrayList<String> getEquipment() throws IOException {
-		// System.out.println("ROVER_03 method getEquipment()");
+		// System.out.println("ROVER_33 method getEquipment()");
 		Gson gson = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
 		out.println("EQUIPMENT");
 
@@ -792,14 +796,14 @@ public class ROVER_13 {
 			jsonEqListIn = "";
 		}
 		StringBuilder jsonEqList = new StringBuilder();
-		// System.out.println("ROVER_03 incomming EQUIPMENT result - first
+		// System.out.println("ROVER_33 incomming EQUIPMENT result - first
 		// readline: " + jsonEqListIn);
 
 		if (jsonEqListIn.startsWith("EQUIPMENT")) {
 			while (!(jsonEqListIn = in.readLine()).equals("EQUIPMENT_END")) {
 				jsonEqList.append(jsonEqListIn);
 				jsonEqList.append("\n");
-				// System.out.println("ROVER_03 doScan() bottom of while");
+				// System.out.println("ROVER_33 doScan() bottom of while");
 			}
 		} else {
 			// in case the server call gives unexpected results
@@ -811,7 +815,7 @@ public class ROVER_13 {
 		ArrayList<String> returnList;
 		returnList = gson.fromJson(jsonEqListString, new TypeToken<ArrayList<String>>() {
 		}.getType());
-		// System.out.println("ROVER_03 returnList " + returnList);
+		// System.out.println("ROVER_33 returnList " + returnList);
 
 		return returnList;
 	}
@@ -819,33 +823,33 @@ public class ROVER_13 {
 	// sends a SCAN request to the server and puts the result in the scanMap
 	// array
 	public void doScan() throws IOException {
-		// System.out.println("ROVER_03 method doScan()");
+		// System.out.println("ROVER_33 method doScan()");
 		Gson gson = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
 		out.println("SCAN");
 
 		String jsonScanMapIn = in.readLine(); // grabs the string that was
 												// returned first
 		if (jsonScanMapIn == null) {
-			System.out.println("ROVER_03 check connection to server");
+			System.out.println("ROVER_33 check connection to server");
 			jsonScanMapIn = "";
 		}
 		StringBuilder jsonScanMap = new StringBuilder();
-		System.out.println("ROVER_03 incomming SCAN result - first readline: " + jsonScanMapIn);
+		System.out.println("ROVER_33 incomming SCAN result - first readline: " + jsonScanMapIn);
 
 		if (jsonScanMapIn.startsWith("SCAN")) {
 			while (!(jsonScanMapIn = in.readLine()).equals("SCAN_END")) {
-				// System.out.println("ROVER_03 incomming SCAN result: " +
+				// System.out.println("ROVER_33 incomming SCAN result: " +
 				// jsonScanMapIn);
 				jsonScanMap.append(jsonScanMapIn);
 				jsonScanMap.append("\n");
-				// System.out.println("ROVER_03 doScan() bottom of while");
+				// System.out.println("ROVER_33 doScan() bottom of while");
 			}
 		} else {
 			// in case the server call gives unexpected results
 			clearReadLineBuffer();
 			return; // server response did not start with "SCAN"
 		}
-		// System.out.println("ROVER_03 finished scan while");
+		// System.out.println("ROVER_33 finished scan while");
 		String jsonScanMapString = jsonScanMap.toString();
 		// convert from the json string back to a ScanMap object
 		scanMap = gson.fromJson(jsonScanMapString, ScanMap.class);
@@ -873,14 +877,14 @@ public class ROVER_13 {
 	 */
 	public static void main(String[] args) throws Exception {
 
-		ROVER_13 client;
+		ROVER_33 client;
 		// if a command line argument is included it is used as the map filename
 		// if present uses an IP address instead of localhost
 
 		if (!(args.length == 0)) {
-			client = new ROVER_13(args[0]);
+			client = new ROVER_33(args[0]);
 		} else {
-			client = new ROVER_13();
+			client = new ROVER_33();
 		}
 
 		client.run();
